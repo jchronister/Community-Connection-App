@@ -4,7 +4,6 @@
 
 const router = require("express")();
 
-
 const { ObjectId } = require("bson");
 const { sendJSON } = require("../middleware/return-object");
 
@@ -25,7 +24,7 @@ router.route("/reset/alldata")
     .then(() => resetdata (req.db.db.collection("posts"), posts()))
 
     // Send Response
-    .then(()=>sendJSON.call(res, null, "Data Reset Successfull"))
+    .then(()=>sendJSON.call(res, null, "Data Reset Successful"))
     .catch(next); 
 
 });

@@ -1,21 +1,18 @@
 "use strict";
 
-const router = require('express')();
-
+const router = require("express")();
 
 // users
+// users/:id --get
 
-router.route("/")
+router
+    .route("/")
 
-  .post( (req, res) => {});
+    .post((req, res) => {});
 
+router
+    .route("/:id")
 
-router.route("/:id")
-
-  .put( (req, res) => {});
-
-
-
-
+    .put((req, res) => {});
 
 module.exports = router;

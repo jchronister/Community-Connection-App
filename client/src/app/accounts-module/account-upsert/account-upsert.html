@@ -1,0 +1,73 @@
+<form [formGroup]="upsertForm" (ngSubmit)="upsertSubmit()">
+
+    <!-- Username -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="username" placeholder="username@domain.com">
+      <mat-error *ngIf="username.hasError('email') && !username.hasError('required')">
+        Please Enter A Valid Email Address
+      </mat-error>  
+      <mat-error *ngIf="username.hasError('required')">
+        Email is Required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Password</mat-label>
+      <input type="text" matInput [formControl]="password" placeholder="At Least 5 Characters">
+      <!-- <mat-error *ngIf="password.hasError('password') && !password.hasError('required')">
+        Please Enter A Valid Email Address
+      </mat-error>
+      <mat-error *ngIf="password.hasError('required')">
+        {{password.errors.msg || 'd'}}
+      </mat-error> -->
+    </mat-form-field>
+
+
+    <!-- Fullname -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Full Name</mat-label>
+      <input type="text" matInput [formControl]="fullname" placeholder="John Doe">
+      <!-- <mat-error *ngIf="password.hasError('password') && !password.hasError('required')">
+        Please Enter A Valid Email Address
+      </mat-error>
+      <mat-error *ngIf="password.hasError('required')">
+        {{password.errors.msg || 'd'}}
+      </mat-error> -->
+    </mat-form-field>
+
+
+    <!-- Role -->
+    <mat-form-field appearance="fill">
+      <mat-label>Role</mat-label>
+      <mat-select [formControl]="role">
+        <mat-option *ngFor="let roli of roles" [value]="roli">
+          {{roli}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+    <!-- Status -->
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select [formControl]="status">
+        <mat-option *ngFor="let stati of statuses" [value]="stati">
+          {{stati ? "Active" : "Inactive"}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      type="submit"
+      [disabled]="!upsertForm.valid"
+      color="primary" 
+      mat-raised-button 
+    >{{submitText}}</button>
+
+
+  </form>
+
+  <h2 class="error">{{error}}</h2>

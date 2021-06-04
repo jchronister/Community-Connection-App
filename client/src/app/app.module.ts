@@ -5,6 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
+
+// Styles
+import {MatTabsModule} from '@angular/material/tabs';
+import { HttpClientModule } from '@angular/common/http';
+import { AccountState } from './account-state';
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -12,9 +20,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTabsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AccountState],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

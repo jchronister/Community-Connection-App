@@ -1,18 +1,25 @@
 "use strict";
 
-var createHttpError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var logger = require("morgan");
+var createHttpError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
+
+const accountsRouter = require('./routes/accounts');
+const postsRouter = require('./routes/posts');
+const usersRouter = require('./routes/users');
+const resetDataRouter = require('./routes/dataInit');
+const { sendJSON, getReturnObject } = require('./middleware/return-object');
+const passDBConnection = require("./middleware/database.js");
 
 const accountsRouter = require("./routes/accounts");
 const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
 const resetDataRouter = require("./routes/dataInit");
-const { sendJSON, getReturnObject } = require("./middleware/return-object"); //TODO: didnot understand the return-object
+const { sendJSON, getReturnObject } = require("./middleware/return-object"); 
 
 // Setup process.env from .env File
-require("dotenv").config(); //TODO: what does this line do?
+require("dotenv").config(); 
 
 var app = express();
 
@@ -22,6 +29,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
+app.use(passDBConnection);
 app.use("/api/v1/CS569FP/accounts", accountsRouter);
 app.use("/api/v1/CS569FP/users", usersRouter);
 app.use("/api/v1/CS569FP/posts", postsRouter);

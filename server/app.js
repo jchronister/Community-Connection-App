@@ -10,6 +10,7 @@ const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const resetDataRouter = require('./routes/dataInit');
 const { sendJSON, getReturnObject } = require('./middleware/return-object');
+const passDBConnection = require("./middleware/database.js");
 
 
 // Setup process.env from .env File
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Routes
+app.use(passDBConnection);
 app.use("/api/v1/CS569FP/accounts", accountsRouter);
 app.use("/api/v1/CS569FP/users", usersRouter);
 app.use("/api/v1/CS569FP/posts", postsRouter);

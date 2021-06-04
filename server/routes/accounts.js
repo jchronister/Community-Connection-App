@@ -5,9 +5,8 @@ const router = require('express')();
 
 // accounts
 
-// /accounts/login post
-// /accounts post
-
+// /accounts/login --post
+// /accounts --post   //! Post to accounts means sign up.
 // accounts
 router.route("/")
 

@@ -8,66 +8,59 @@
 // mongo "mongodb+srv://cluster0.p1i7n.mongodb.net/myFirstDatabase" --username bipin
 // 1234
 
-
 // Mongo DB
-const {MongoClient} = require("mongodb");
+const { MongoClient } = require("mongodb");
 let db;
 
 /** Create and Store Database Connection. Logs Errors to Console
-* @param {function} fx - Callback Function (Database as Argument)
-* @returns {undefined}
-*/
+ * @param {function} fx - Callback Function (Database as Argument)
+ * @returns {undefined}
+ */
 function connectToMongoDatabase(fx) {
+    const uri = process.env.MongoDatabaseConnectionString;
 
-  const uri = process.env.MongoDatabaseConnectionString;
-
-  MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .connect()
-  .then(function(client) {
-    db = client;
-    fx(client);
-  })
-  .catch(console.log);
-  //??? Log Connections and Errors to File ???
-
+    MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+        .connect()
+        .then(function (client) {
+            db = client;
+            fx(client);
+        })
+        .catch(console.log);
+    //??? Log Connections and Errors to File ???
 }
 
-
 /** Pass Database Connection Reference & Info to Route Handlers
-*   @param {object} req - Request Object
-*   @param {object} res - Response Object
-*   @param {function} next - Next Function
-*   @returns {undefined}
-*/
+ *   @param {object} req - Request Object
+ *   @param {object} res - Response Object
+ *   @param {function} next - Next Function
+ *   @returns {undefined}
+ */
 let passDBConnection = function (req, res, next) {
-  
-  // Object to Attach to Request
-  let dbInfo = {
-    db: db.db(process.env.appDBName),
-    collection: "",
-    collectionName: "",
-    id: null,
-    baseUrl: "",
-    username: "",
-    role: "",
-    tokenFx: ({username, name}) => ({username, name}),
-    usernameField: "username",
-    passwordField: "password"
-  };
+    // Object to Attach to Request
+    let dbInfo = {
+        db: db.db(process.env.appDBName),
+        collection: "",
+        collectionName: "",
+        id: null,
+        baseUrl: "",
+        username: "",
+        role: "",
+        tokenFx: ({ username, name }) => ({ username, name }),
+        usernameField: "username",
+        passwordField: "password",
+    };
 
-  // Attach Info and Continue
-  req.db = dbInfo;
-  return next();
-  
+    // Attach Info and Continue
+    req.db = dbInfo;
+    return next();
 };
 
 // Connect to Database and Pass Reference with Request
 module.exports = function (req, res, next) {
-
-  // Pass DB Reference / Connect If Needed
-  if (db) {
-    passDBConnection(req, res, next);
-  } else {
-    connectToMongoDatabase(()=>passDBConnection(req, res, next));
-  }
+    // Pass DB Reference / Connect If Needed
+    if (db) {
+        passDBConnection(req, res, next);
+    } else {
+        connectToMongoDatabase(() => passDBConnection(req, res, next));
+    }
 };

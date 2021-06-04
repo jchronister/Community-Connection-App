@@ -33,18 +33,18 @@ interface IServerObject {
 @Injectable()
 export class UserHttp {
 
-  url = ""
+  url: string
 
   constructor (private http: HttpClient, private state: AccountState) {
-    // this.url = state.getState("rootURL")
+    this.url = this.state.getHost()
   }
 
   login (data: ILogin): Observable<IServerObject> {
-    return this.http.post<IServerObject>(this.url + "/signin",data)
+    return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts/login",data)
   }
 
   createAccount (data: ILogin): Observable<IServerObject> {
-    return this.http.post<IServerObject>(this.url + "/signup",data)
+    return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts/login",data)
   }
 
 

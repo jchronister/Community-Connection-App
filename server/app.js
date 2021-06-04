@@ -5,6 +5,7 @@ var express = require("express");
 var path = require("path");
 var logger = require("morgan");
 
+const cors = require("cors");
 const accountsRouter = require("./routes/accounts");
 const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
@@ -19,7 +20,7 @@ var app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
-
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
@@ -31,7 +32,7 @@ app.use("/api/v1/CS569FP/data", resetDataRouter);
 
 // Handle 404 URL Not Found
 app.use(function (req, res, next) {
-    next(createHttpError(404));
+    next(createHttpError(404, "URL Not Found"));
 });
 
 // Error Handler

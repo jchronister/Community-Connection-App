@@ -1,41 +1,40 @@
 import { Injectable } from "@angular/core";
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 
-interface IState {
-
-  errors: Subject<string>,
-  rootURL: string,
-
-}
-
-   
-
-
-
-
+ 
 @Injectable()
-// @Injectable({providedIn: "root"})
 export class AccountState {
 
+  // Setup Root URL
+  getHost (): string {
+    return "http://localhost:3001"
+  }
+
+  private readonly _token = new BehaviorSubject<string>("")
+
+  getToken (): string {
+    return this._token.getValue();
+  }
+
+  setToken (token: string): void {
+    this._token.next(token)
+  }
   
-  state = {
-    errors: new Subject(),
-    rootURL: "http://localhost:3001/api/v1/CS569/",
-    token: ""
+  subscribeToken (fx: (val: string)=>{}) {
+     return this._token.subscribe(fx) 
   }
 
-  setState(key: string, data: any): void {
-    this.state[key as keyof IState] = data
-  }
 
-  getState(key: string) {
-    return this.state[key as keyof IState]
-  }
 
-  subscribe(key: string, fx: (n:any)=>void) {
-    return (<Subject<unknown>>this.state[key as keyof IState]).subscribe(fx)
-  }
+
+
+
+
+
+
+
+  
  
 
 }

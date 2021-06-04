@@ -1,25 +1,19 @@
 "use strict";
 
-var createHttpError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-
-const accountsRouter = require('./routes/accounts');
-const postsRouter = require('./routes/posts');
-const usersRouter = require('./routes/users');
-const resetDataRouter = require('./routes/dataInit');
-const { sendJSON, getReturnObject } = require('./middleware/return-object');
-const passDBConnection = require("./middleware/database.js");
+var createHttpError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var logger = require("morgan");
 
 const accountsRouter = require("./routes/accounts");
 const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
 const resetDataRouter = require("./routes/dataInit");
-const { sendJSON, getReturnObject } = require("./middleware/return-object"); 
+const { sendJSON, getReturnObject } = require("./middleware/return-object");
+const passDBConnection = require("./middleware/database.js");
 
 // Setup process.env from .env File
-require("dotenv").config(); 
+require("dotenv").config();
 
 var app = express();
 

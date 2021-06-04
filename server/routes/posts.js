@@ -6,15 +6,15 @@ const router = require("express")();
 
 // posts
 
-//posts/help_requests -- post
-//posts/help_requests --get  --sort by date
+//posts/help_requests -- post//!Done
+//posts/help_requests --get  --sort by date //!Done
 
-//posts/service_providers --post
-//posts/service_providers --get  --sort by date
+//posts/service_providers --post//!Done
+//posts/service_providers --get  --sort by date//!Done
 
-//posts/:_id/comment --post
+//posts/:_id/comment --post //!Done
 
-//posts --get --sort by date
+//posts --get --sort by date //!Done
 
 //posts all posts sort by date
 router
@@ -42,7 +42,7 @@ router
 
     //to insert a help request
     .post((req, res) => {
-        req.db.db.collection("posts").insertOne(req.body).sendJSON.bind(res);
+        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
     });
 
 //insert comment in post with an :id
@@ -60,6 +60,20 @@ router
             );
     });
 
-//
+//post and get for posts of service providers
+router
+    .route("/service_providers")
+    .get((req, res) => {
+        req.db.db
+            .collection("posts")
+            .find({ type: "Service Provider" })
+            .sort({ date: -1 })
+            .toArray(sendJSON.bind(res));
+    })
+
+    //to insert a help request
+    .post((req, res) => {
+        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
+    });
 
 module.exports = router;

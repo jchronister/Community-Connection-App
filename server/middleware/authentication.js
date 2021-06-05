@@ -92,3 +92,17 @@ module.exports.createAccount = function (req, res, next) {
         })
         .catch(next);
 };
+
+
+console.log(
+jwt.sign({address: null,
+city: null,
+email: "guest",
+name: "guest",
+phone: null,
+state: null,
+username: "guest",
+zip: null,
+_id: null},"a,sd.fa/sf#5d"
+)
+)

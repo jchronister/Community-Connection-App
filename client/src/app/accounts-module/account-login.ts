@@ -33,8 +33,6 @@ import { Subscription } from 'rxjs';
       </mat-error>
     </mat-form-field>
 
-
-
     <!-- Password -->
     <mat-form-field class="input">
       <mat-label>Password</mat-label>
@@ -47,20 +45,21 @@ import { Subscription } from 'rxjs';
       </mat-error> -->
     </mat-form-field>
 
-    <div>
-      <button 
+    <div class="leftMargin">
+      <button
         type="submit"
         color="primary" 
         mat-raised-button 
         [disabled]="!signinForm.valid">Login</button>
 
+        <button 
+        class="leftMargin"
+        type="button"
+        color="secondary" 
+        mat-raised-button 
+        (click)="continueAsGuest()">Continue as Guest</button>
+    </div>
 
-    <button 
-    type="button"
-    color="secondary" 
-    mat-raised-button 
-    (click)="continueAsGuest()">Continue as Guest</button>
-</div>
     </div>
    
 
@@ -71,7 +70,7 @@ import { Subscription } from 'rxjs';
   `,
 
   styles: [".error {color: red}",
-
+  ".leftMargin {margin-left: 20px}",
   ".input {margin:20px}"
 ]
 
@@ -141,8 +140,10 @@ export class AccountLogin implements OnInit, OnDestroy{
   }
   
   continueAsGuest () {
-    this.state.setToken("eyJ1c2VybmFtZSI6Ikd1ZXN0In0=")
-    this.router.navigate(this.state.loggedInRedirect())
+    console.log(this.state.getCurrentUserInfo())
+    this.state.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs")
+    console.log(this.state.getCurrentUserInfo())
+    // this.router.navigate(this.state.loggedInRedirect())
   }
 
   ngOnDestroy() {

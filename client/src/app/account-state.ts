@@ -39,10 +39,15 @@ export class AccountState {
      return this._token.subscribe(fx) 
   }
 
+  // Returns Current User Token Info
   getCurrentUserInfo () {
 
     const token = this.getToken()
-    return token ? jwt_decode(this.getToken()) : {}
+
+    const data: any = token ? jwt_decode(this.getToken()) : {}
+
+    return ["_id", "username", "name", "address", "city", "state", "zip", "phone", "email"]
+      .reduce((a, n) => ({...a, [n]: data[n] || null}), {})
 
   }
 

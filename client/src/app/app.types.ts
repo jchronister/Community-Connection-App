@@ -22,7 +22,7 @@ export interface IPosts {
 export interface IComments {
   comment: string;
   user: IUser;
-  date: string;
+  date: string | Date;
 }
 
 export interface IServerObject {

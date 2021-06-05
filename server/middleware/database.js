@@ -45,8 +45,8 @@ let passDBConnection = function (req, res, next) {
         baseUrl: "",
         username: "",
         role: "",
-        tokenFx: ({ username, name, address, city, state, zip, phone, email }) => 
-        ({ username, name, address, city, state, zip, phone, email }),  
+        tokenFx: ({ _id, username, name, address, city, state, zip, phone, email }) => 
+        ({ _id, username, name, address, city, state, zip, phone, email }),  
         usernameField: "email",
         passwordField: "password",
     };

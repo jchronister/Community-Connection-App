@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from 'rxjs';
 import jwt_decode from "jwt-decode";
+import { IUser } from "./app.types";
 
 export interface ICities {
   city: string
@@ -40,15 +41,16 @@ export class AccountState {
   }
 
   // Returns Current User Token Info
-  getCurrentUserInfo () {
+  getCurrentUserInfo (): IUser {
 
     const token = this.getToken()
 
     const data: any = token ? jwt_decode(this.getToken()) : {}
 
-    return ["_id", "username", "name", "address", "city", "state", "zip", "phone", "email"]
+    const retrn = ["_id", "username", "name", "address", "city", "state", "zip", "phone", "email"]
       .reduce((a, n) => ({...a, [n]: data[n] || null}), {})
 
+    return <IUser>retrn
   }
 
 

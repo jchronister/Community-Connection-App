@@ -13,8 +13,8 @@
           <app-comments *ngFor="let comment of post.comments" [comment]="comment"></app-comments>
           <p>Date : {{post.date}}</p>
      </mat-card-content>
+     <input type="text" placeholder="Your comment here" (keyup)="onKey($event)">
      <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
+          <button mat-button (click)="onClick()">Add Comment</button>
      </mat-card-actions>
 </mat-card>

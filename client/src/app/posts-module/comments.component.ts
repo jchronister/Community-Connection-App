@@ -5,12 +5,15 @@ import { IComments, IUser } from '../app.types';
 
 @Component({
   selector: 'app-comments',
-  templateUrl: "./comments.component.html",
+  template: `
+  <p>{{comment.user.username}}</p>
+  <p>{{comment.comment}}</p>
+  <p>{{comment.date}}</p>
+  `,
   styles: [],
 })
 export class CommentsComponent implements OnInit {
-  @Input()
-  comment : any
+  @Input() comment : any  //TODO: could not figure out how to initialize with type
    
   newComment : FormControl= new FormControl('',Validators.required)
   constructor() {}

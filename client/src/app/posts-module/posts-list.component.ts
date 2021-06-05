@@ -7,12 +7,21 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-posts-list',
-  templateUrl: "./post-list.component.html",
+  templateUrl: './post-list.component.html',
   styles: [],
 })
 export class PostsListComponent implements OnInit {
   posts: Array<IPosts> = [];
+  inputValue: string = '';
   constructor(private myService: MainServiceService) {}
+
+  onKey(e: Event) {
+   this.inputValue = (<HTMLInputElement>e.target).value;
+  }
+  
+  onClick(){
+    
+  }
 
   ngOnInit(): void {
     this.myService.getPosts().subscribe((data) => {

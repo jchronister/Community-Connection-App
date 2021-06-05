@@ -11,6 +11,12 @@ const { sendJSON } = require("../middleware/return-object");
 // db.users.createIndex({email:1}, {unique:true})
 // db.users.createIndex({username:1}, {unique:true})
 
+// View Data Structure for Development
+router.route("/reset/getusers")
+  .get((req, res)=>req.db.db.collection("users").find({}).limit(5).toArray(sendJSON.bind(res)));
+
+router.route("/reset/getposts")
+  .get((req, res)=>req.db.db.collection("posts").find({}).limit(5).toArray(sendJSON.bind(res)));
 
 // Reset All Data
 // '/users/reset/alldata'

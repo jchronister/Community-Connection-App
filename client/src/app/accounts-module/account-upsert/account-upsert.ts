@@ -1,9 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Component, Input, OnInit } from "@angular/core";
+import { Form, FormControl, FormGroup, Validators } from "@angular/forms";
 import { IToken, UserHttp } from "../account-http";
 import { passwordVerification } from "../account-module-fx";
-import { AccountState } from "../../account-state";
-import jwt_decode from "jwt-decode";
+import { AccountState, ICities } from "../../account-state";
+
+import { Placeholder } from "@angular/compiler/src/i18n/i18n_ast";
+import { Router } from "@angular/router";
+
 
 
  
@@ -20,52 +23,68 @@ import jwt_decode from "jwt-decode";
 export class AccountUpsert implements OnInit{
 
   upsertForm: FormGroup
-  username: FormControl
+  email: FormControl
   password: FormControl
+  username: FormControl
   fullname: FormControl
-  status: FormControl
-  role: FormControl
-  roles = ["user", "admin"]
-  statuses = [true, false]
+  city: FormControl
+  state: FormControl
+  phone: FormControl
+  address: FormControl
+  zip: FormControl
+  locations: Array<ICities>
   submitText = "Submit"
   error = ""
+  cities: Array<string>
+  states: Set<string>
+  zips: Array<number>
 
-  constructor (private http: UserHttp, private userState: AccountState) {
+  constructor (private http: UserHttp, private appState: AccountState, private router: Router) {
 
-    this.username = new FormControl("", Validators.required)
+    // Get City/State/Zip
+    this.locations = appState.locations() 
+    this.states = new Set
+
+    this.cities = this.locations.map (n => {
+      this.states.add(n.state)
+      return n.city
+    })
+    this.zips = this.locations.map (n => n.zip)
+
+
+    this.email = new FormControl("", [Validators.required, Validators.email])
     this.password = new FormControl("", [Validators.required, passwordVerification])
+    this.username = new FormControl("", Validators.required)
     this.fullname = new FormControl("", [Validators.required, this.fullNameValidator])
-    this.status = new FormControl("", Validators.required)
-    this.role = new FormControl("", Validators.required)
+    this.city = new FormControl("", Validators.required)
+    this.state = new FormControl("", Validators.required)
+    this.address = new FormControl("", Validators.required)
+    this.zip = new FormControl("", Validators.required)
+    this.phone = new FormControl("", [Validators.required, this.phoneValidation])
 
     this.upsertForm = new FormGroup({
 
-      username: this.username,
+      email: this.email,
       password: this.password,
+      username: this.username,
       fullname: this.fullname,
-      status: this.status,
-      role: this.role
+      address: this.address,
+      city: this.city,
+      state: this.state,
+      zip: this.zip,
+      phone: this.phone
 
     })
 
     // Reset Error Message
     this.upsertForm.statusChanges.subscribe(()=>this.error="")
 
+
   }
 
   ngOnInit() {
 
-    // const token = this.userState.getToken()
 
-    // if (token) {
-
-    //   const decoded: IToken = jwt_decode(token);
-    //   this.username.setValue(decoded.email)
-    //   this.fullname.setValue(decoded.fullname)
-    //   this.status.setValue(decoded.active)
-    //   this.role.setValue(decoded.role)
-
-    // }
 
   }
 
@@ -77,14 +96,25 @@ export class AccountUpsert implements OnInit{
       {msg: "Invalid Full Name: Need Two Words"}
   }
 
+  // Phone Number XXX-XXX-XXXX
+  phoneValidation (el: FormControl) {
+
+    if (/^[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$/.test(el.value)) {
+      return null
+    } else {
+      return {msg: "Phone Number Invalid. Need XXX-XXX-XXXX Format"}
+    }
+
+  }
+
 
   upsertSubmit () {
 
-    console.log(this.upsertForm.value)
     this.http.createAccount(this.upsertForm.value).subscribe( n=> {
-      
+      debugger 
       if (n.status === "Success") {
-        // this.userState.token = n.data
+        this.appState.setToken(n.data)
+        this.router.navigate(this.appState.loggedInRedirect())
       } else {
         this.error = <string>n.error
       }
@@ -94,8 +124,34 @@ export class AccountUpsert implements OnInit{
 
   }
 
-
-
 }
 
+
+
+@Component({
+  selector: "cInput",
+
+  template: `
+
+    <mat-form-field>
+      <mat-label>{{title}}</mat-label>
+      <input type="{{type}}" matInput [formControl]="control!" placeholder="{{placeholder}}">
+      <mat-error *ngIf="control!.hasError('email') && control!.hasError('required')">
+        Error Message
+      </mat-error>  
+      <mat-error *ngIf="control!.hasError('required')">
+        Required Input
+      </mat-error>
+    </mat-form-field>
+
+  `
+})
+export class CustomInput{
+
+  @Input() type = "text"
+  @Input() control: FormControl | undefined
+  @Input() placeholder = ""
+  @Input() title = "input"
+
+}
 

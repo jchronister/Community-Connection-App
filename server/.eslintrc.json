@@ -10,6 +10,7 @@
     },
     "rules": {
       "id-length": [2, {"min": 2, "max": 30, "exceptions": ["n", "i","j"]}],
-      "quotes": "off"
+      "quotes": "off",
+      "require-jsdoc": "off"
     }
 }

@@ -12,11 +12,15 @@ import { Subscription } from "rxjs";
 
   selector: "account-login",
   template: `
+
+  <div class="input">
+    <h2>The One Community Forum</h2>
   
     <form [formGroup] = signinForm (ngSubmit)="login()">
 
     <!-- Username -->
-    <mat-form-field class="example-full-width">
+    <div>
+    <mat-form-field class="input">
       <mat-label>Email</mat-label>
       <input type="email" matInput [formControl]="username" placeholder="username@domain.com">
       <mat-error *ngIf="username.hasError('email') && !username.hasError('required')">
@@ -28,8 +32,9 @@ import { Subscription } from "rxjs";
     </mat-form-field>
 
 
+
     <!-- Password -->
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="input">
       <mat-label>Password</mat-label>
       <input type="text" matInput [formControl]="password" placeholder="At Least 5 Characters">
       <!-- <mat-error *ngIf="password.hasError('password') && !password.hasError('required')">
@@ -47,15 +52,26 @@ import { Subscription } from "rxjs";
         mat-raised-button 
         [disabled]="!signinForm.valid">Login</button>
 
+
+    <button 
+    type="button"
+    color="secondary" 
+    mat-raised-button 
+    (click)="continueAsGuest()">Continue as Guest</button>
+</div>
     </div>
+   
 
     </form>
 
     <h2 class="error">{{error}}</h2>
-    
+  </div>
   `,
 
-  styles: [".error {color: red}"]
+  styles: [".error {color: red}",
+
+  ".input {margin:20px}"
+]
 
 })
 export class AccountLogin implements OnInit, OnDestroy{
@@ -66,14 +82,14 @@ export class AccountLogin implements OnInit, OnDestroy{
   error = ""
   subscriptions: Subscription | undefined 
 
-  constructor (private formBuilder: FormBuilder, private router: Router, private http: UserHttp, private userState: AccountState) {
+  constructor (private formBuilder: FormBuilder, private router: Router, private http: UserHttp, private state: AccountState) {
 
     this.username = new FormControl("", [Validators.required, Validators.email])
     this.password = new FormControl("", [Validators.required, passwordVerification])
 
     this.signinForm = new FormGroup({
 
-      username: this.username,
+      email: this.username,
       password: this.password
 
     })
@@ -101,15 +117,16 @@ export class AccountLogin implements OnInit, OnDestroy{
   // Login with Server
   login () {
 
+    // Send Login Request
     this.http.login(this.signinForm.value).subscribe( n => {
-debugger
+
       if (n.status === "Success") {
 
-        // this.userState.logIn(n.data)
+        this.state.setToken(n.data)
+        this.router.navigate(this.state.loggedInRedirect())
       
       } else {
 
-        // Error
         this.error = <string>n.error
 
       }   
@@ -117,13 +134,17 @@ debugger
     (error) =>{
       console.log(error)
       this.error = <string>error.message
-  debugger
     }
       )
       
     
   }
-
+  
+  continueAsGuest () {
+    console.log(this.state.getCurrentUserInfo())
+    // this.state.setToken("eyJ1c2VybmFtZSI6Ikd1ZXN0In0=")
+    // this.router.navigate(this.state.loggedInRedirect())
+  }
 
   ngOnDestroy() {
     if (this.subscriptions) this.subscriptions.unsubscribe()

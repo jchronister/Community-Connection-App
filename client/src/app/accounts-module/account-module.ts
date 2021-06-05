@@ -1,17 +1,19 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AccountLogin } from "./account-login";
-import { AccountUpsert } from "./account-upsert/account-upsert";
+import { AccountUpsert, CustomInput } from "./account-upsert/account-upsert";
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
 
 import { ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { UserIntercepter } from "../http-interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { UserHttp } from "./account-http";
+import { AccountProfile, FormatAddress } from "./account-profile";
 
 
 
@@ -22,6 +24,7 @@ const routes: Routes = [
   {path: "login", component: AccountLogin},
   {path: "createaccount", component: AccountUpsert},
   {path: "editaccount", component: AccountUpsert},
+  {path: "profile", component: AccountProfile},
   {path: "**", redirectTo: "login"}
 
 ]
@@ -31,7 +34,10 @@ const routes: Routes = [
 
   declarations: [
     AccountLogin,
-    AccountUpsert
+    AccountUpsert,
+    CustomInput,
+    AccountProfile,
+    FormatAddress
   ],
 
   imports: [
@@ -41,6 +47,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
+    MatCardModule
  
   ],
 
@@ -51,7 +58,7 @@ const routes: Routes = [
 
     
     ],
-  bootstrap: [AccountLogin]
+  // bootstrap: [AccountLogin]
 
 })
 export class AccountsModule{}

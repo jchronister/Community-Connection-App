@@ -39,12 +39,12 @@ export class UserHttp {
     this.url = this.state.getHost()
   }
 
-  login (data: ILogin): Observable<IServerObject> {
+  login (data: ILogin): Observable<IServerObject> {  
     return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts/login",data)
   }
 
   createAccount (data: ILogin): Observable<IServerObject> {
-    return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts/login",data)
+    return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts",data)
   }
 
 

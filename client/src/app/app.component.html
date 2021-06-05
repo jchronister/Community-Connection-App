@@ -1,4 +1,17 @@
 
+<p>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>The One Community Forum</span>
+      <span class="example-spacer"></span>
+
+      <span>
+        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}}
+      </span>
+      <button class="logout" *ngIf="user" (click)="logout(1)">Logout</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</p>
 
 <nav mat-tab-nav-bar>
 <a mat-tab-link [routerLink]="['/','accounts','login']" *ngIf="!loggedIn">Login</a>
@@ -6,7 +19,7 @@
 <a mat-tab-link [active]="true"[routerLink]="['/','posts','help-requests']" *ngIf="loggedIn" >Help Requests</a>
 <a mat-tab-link [active]="true"[routerLink]="['/','posts','help-requests']" *ngIf="loggedIn">Service Providers</a>
 <a mat-tab-link [active]="true"[routerLink]="['/','accounts','profile']" *ngIf="loggedIn">My Profile</a>
-<a mat-tab-link [routerLink]="['/','accounts','login']" (click)="logout()" *ngIf="loggedIn">Logout</a>
+<a mat-tab-link [routerLink]="['/','accounts','login']" (click)="logout(0)" *ngIf="loggedIn">Logout</a>
   <a mat-tab-link disabled>Disabled Link</a>
 </nav>
 

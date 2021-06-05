@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MainServiceService } from './main-service.service';
 
-import { IUser, IPosts, IServerObject } from '../app.types';
+import { IUser, IPosts, IServerObject, IComments } from '../app.types';
 import { Observable } from 'rxjs';
+import { AccountState } from '../account-state';
 
 @Component({
   selector: 'app-posts-list',
@@ -13,14 +14,30 @@ import { Observable } from 'rxjs';
 export class PostsListComponent implements OnInit {
   posts: Array<IPosts> = [];
   inputValue: string = '';
-  constructor(private myService: MainServiceService) {}
+  constructor(
+    private myService: MainServiceService,
+    private state: AccountState
+  ) {}
 
   onKey(e: Event) {
-   this.inputValue = (<HTMLInputElement>e.target).value;
+    this.inputValue = (<HTMLInputElement>e.target).value;
   }
-  
-  onClick(){
-    
+
+  onClick() {
+    if (!this.inputValue) {
+      return;
+    }
+    let comment = {
+      comment: this.inputValue,
+      user: this.state.getCurrentUserInfo(),
+      date: new Date(),
+    };
+
+    this.myService.sendComment(comment).subscribe((data) => {
+      if (data.status === 'Success') {
+        this.posts = data.data;
+      }
+    });
   }
 
   ngOnInit(): void {

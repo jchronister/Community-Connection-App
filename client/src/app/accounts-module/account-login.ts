@@ -141,9 +141,8 @@ export class AccountLogin implements OnInit, OnDestroy{
   }
   
   continueAsGuest () {
-    console.log(this.state.getCurrentUserInfo())
-    // this.state.setToken("eyJ1c2VybmFtZSI6Ikd1ZXN0In0=")
-    // this.router.navigate(this.state.loggedInRedirect())
+    this.state.setToken("eyJ1c2VybmFtZSI6Ikd1ZXN0In0=")
+    this.router.navigate(this.state.loggedInRedirect())
   }
 
   ngOnDestroy() {

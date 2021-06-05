@@ -1,16 +1,18 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { UserHttp } from "./account-http";
-import { passwordVerification } from "./account-module-fx";
-import { AccountState } from "../account-state";
-import { Subscription } from "rxjs";
-
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { UserHttp } from './account-http';
+import { passwordVerification } from './account-module-fx';
+import { AccountState } from '../account-state';
+import { Subscription } from 'rxjs';
 
 @Component({
-
-  selector: "account-login",
+  selector: 'account-login',
   template: `
 
   <div class="input">
@@ -96,12 +98,11 @@ export class AccountLogin implements OnInit, OnDestroy{
 
   }
 
-  ngOnInit () {
-
+  ngOnInit() {
     // Reset Errors
     this.subscriptions = this.signinForm.statusChanges.subscribe(
-      () => this.error = ""
-    )
+      () => (this.error = '')
+    );
 
     // Subscribe to Errors
     // this.subscriptions.add(this.userState.getState("errors")
@@ -111,7 +112,6 @@ export class AccountLogin implements OnInit, OnDestroy{
     // this.subscriptions.add(this.userState
     //   .subscribe("errors", n => { this.error = <string>n})
     // )
-    
   }
 
   // Login with Server
@@ -147,7 +147,6 @@ export class AccountLogin implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    if (this.subscriptions) this.subscriptions.unsubscribe()
+    if (this.subscriptions) this.subscriptions.unsubscribe();
   }
-
 }

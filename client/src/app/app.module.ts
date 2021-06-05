@@ -13,9 +13,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AccountState } from './account-state';
 
 
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

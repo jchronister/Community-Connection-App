@@ -17,6 +17,12 @@ const router = require("express")();
 //posts --get --sort by date //!Done
 
 //posts all posts sort by date
+
+router.param('id', (req, res, next, id)=> {
+    if(verifyMongoId(req.params, 'id', next)){
+        next();
+    }})
+
 router
     .route("/")
 

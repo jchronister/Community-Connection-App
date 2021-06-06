@@ -1,3 +1,28 @@
 
+  .centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+  }
 
+  .center {
+    text-align: center;
+  }
 
+  .submit {
+    /* width: 50px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .select {
+    margin:20px;
+  }
+
+  .input {
+    margin:20px;
+  }

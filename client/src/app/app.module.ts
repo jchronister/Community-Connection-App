@@ -9,9 +9,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Styles
 import {MatTabsModule} from '@angular/material/tabs';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountState } from './account-state';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { UserIntercepter } from './http-interceptor';
 
 
 @NgModule({
@@ -26,7 +27,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     HttpClientModule,
     MatToolbarModule
   ],
-  providers: [AccountState],
+  providers: [AccountState,
+    { provide: HTTP_INTERCEPTORS, useClass: UserIntercepter , multi: true }
+  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

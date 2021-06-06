@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Form, FormControl, FormGroup, Validators } from "@angular/forms";
-import { IToken, UserHttp } from "../account-http";
+import { IToken, UserHttp } from "../account-http-service";
 import { passwordVerification } from "../account-module-fx";
 import { AccountState, ICities } from "../../account-state";
 
@@ -119,7 +119,10 @@ export class AccountUpsert implements OnInit{
         this.error = <string>n.error
       }
     },
-    (error) => this.error = error.message
+    (error) => {
+      this.error = error.message
+
+    }
     )
 
   }

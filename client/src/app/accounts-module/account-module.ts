@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AccountLogin } from "./account-login";
-import { AccountUpsert, CustomInput } from "./account-upsert/account-upsert";
+import { AccountLogin } from "./account-login-component";
+import { AccountUpsert, CustomInput } from "./account-upsert/account-upsert-component";
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
@@ -12,8 +12,8 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { UserIntercepter } from "../http-interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { UserHttp } from "./account-http";
-import { AccountProfile, FormatAddress } from "./account-profile";
+import { UserHttp } from "./account-http-service";
+import { AccountProfile, FormatAddress } from "./account-profile-component";
 
 
 

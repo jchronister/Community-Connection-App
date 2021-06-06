@@ -10,3 +10,10 @@ export function passwordVerification (el: FormControl) {
   }
   return null
 }
+
+
+export function getProperty (path: string, object: any, splitChr = ".") {
+
+  return path.split(splitChr).reduce((a, n) => a && a[n], object)
+
+}

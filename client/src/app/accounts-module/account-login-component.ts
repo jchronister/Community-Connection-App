@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserHttp } from './account-http';
+import { UserHttp } from './account-http-service';
 import { passwordVerification } from './account-module-fx';
 import { AccountState } from '../account-state';
 import { Subscription } from 'rxjs';
@@ -15,9 +15,9 @@ import { Subscription } from 'rxjs';
   selector: 'account-login',
   template: `
 
-  <div class="input">
-    <h2>Please Login or Continue as Guest</h2>
-    <h4>Guests are Only Allowed to View Content (No Posting)</h4>
+  <div class="centered">
+    <h2 class="center">Please Login or Continue as Guest</h2>
+    <h4 class="center">Guests are Only Allowed to View Content (No Posting)</h4>
     <form [formGroup] = signinForm (ngSubmit)="login()">
 
     <!-- Username -->
@@ -45,7 +45,7 @@ import { Subscription } from 'rxjs';
       </mat-error> -->
     </mat-form-field>
 
-    <div class="leftMargin">
+    <div class="leftMargin, center">
       <button
         type="submit"
         color="primary" 
@@ -68,11 +68,7 @@ import { Subscription } from 'rxjs';
     <h2 class="error">{{error}}</h2>
   </div>
   `,
-
-  styles: [".error {color: red}",
-  ".leftMargin {margin-left: 20px}",
-  ".input {margin:20px}"
-]
+  styleUrls: ["./account-login.css"]
 
 })
 export class AccountLogin implements OnInit, OnDestroy{

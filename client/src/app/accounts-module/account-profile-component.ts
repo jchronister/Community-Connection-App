@@ -14,8 +14,8 @@ import { getProperty } from "./account-module-fx"
   <mat-card>
     <mat-card-header>
 
-      <div mat-card-avatar>User</div>
-      <mat-card-title>{{user.name}}</mat-card-title>
+      <div mat-card-avatar></div>
+      <mat-card-title>User {{user.name}}</mat-card-title>
       <mat-card-subtitle>{{user.username}}</mat-card-subtitle>
 
     </mat-card-header>

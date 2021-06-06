@@ -14,13 +14,44 @@
 </p>
 
 <nav mat-tab-nav-bar>
-<a mat-tab-link [routerLink]="['/','accounts','login']" *ngIf="!loggedIn">Login</a>
-<a mat-tab-link [active]="true"[routerLink]="['/','accounts','createaccount']" *ngIf="!loggedIn">Create Account</a>
-<a mat-tab-link [active]="true"[routerLink]="['/','posts','help-requests']" [state]="{request : 'help-requests'}" *ngIf="loggedIn" >Help Requests</a>
-<a mat-tab-link [active]="true"[routerLink]="['/','posts','help-requests']" [state]="{request :'post-requests'}" *ngIf="loggedIn">Service Providers</a>
-<a mat-tab-link [active]="true"[routerLink]="['/','accounts','profile']" *ngIf="loggedIn">My Profile</a>
-<a mat-tab-link [routerLink]="['/','accounts','login']" (click)="logout(0)" *ngIf="loggedIn">Logout</a>
-  <a mat-tab-link disabled>Disabled Link</a>
+<a mat-tab-link
+  [active]="activeLink === 'login'"
+  (click)="activeLink = 'login'"
+  [routerLink]="['/','accounts','login']" 
+  *ngIf="!loggedIn">Login</a>
+<a mat-tab-link 
+  [active]="activeLink === 'createaccount'"
+  (click)="activeLink = 'createaccount'"
+  [routerLink]="['/','accounts','createaccount']" 
+  *ngIf="!loggedIn">Create Account</a>
+<a mat-tab-link 
+  [active]="activeLink === 'createrequest'"
+  (click)="activeLink = 'createrequest'"
+  [routerLink]="['/','posts','createrequest']" 
+  *ngIf="loggedIn" >Create Request</a>
+<a mat-tab-link 
+  [active]="activeLink === 'help-requests'"
+  (click)="activeLink = 'help-requests'"
+  [routerLink]="['/','posts','help-requests']"
+  [state]="{request : 'help-requests'}"
+  *ngIf="loggedIn" >Help Requests</a>
+<a mat-tab-link 
+  [active]="activeLink === 'service-requests'"
+  (click)="activeLink = 'service-requests'"
+  [state]="{request :'service-requests'}"
+  [routerLink]="['/','posts','help-requests']" 
+  *ngIf="loggedIn">Service Providers</a>
+<a mat-tab-link 
+  [active]="activeLink === 'profile'"
+  (click)="activeLink = 'profile'"
+  [routerLink]="['/','accounts','profile']" 
+  [state]="{source: 'currentUser'}" *ngIf="loggedIn">My Profile</a>
+<a mat-tab-link 
+  [active]="activeLink === 'logout'"
+  [routerLink]="['/','accounts','login']" 
+  (click)="logout(0)" 
+  *ngIf="loggedIn">Logout</a>
+
 </nav>
 
 <router-outlet></router-outlet>

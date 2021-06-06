@@ -36,7 +36,7 @@ export class PostsListComponent implements OnInit {
     if (!this.inputValue) {
       return;
     }
-    let comment = {
+    let comment : IComments = {
       comment: this.inputValue,
       user: this.state.getCurrentUserInfo(),
       date: new Date(),

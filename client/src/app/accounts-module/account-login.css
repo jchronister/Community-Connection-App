@@ -1,0 +1,18 @@
+
+
+.error {color: red}
+.leftMargin {margin-left: 20px}
+.input {margin:20px}
+
+.centered {
+  margin-top:60px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.center {
+  text-align: center;
+}

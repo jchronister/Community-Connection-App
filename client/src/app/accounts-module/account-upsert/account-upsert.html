@@ -1,7 +1,13 @@
+<div>
+<div>
 <form [formGroup]="upsertForm" (ngSubmit)="upsertSubmit()">
 
+  <h2 class="center">Please Fillout Form to Create an Account</h2>
+
+  <div class="center">
     <!-- Email -->
     <cInput
+      class="input"
       title = "Email"
       type = "email"
       [control] = "email"
@@ -10,6 +16,7 @@
 
     <!-- Password -->
     <cInput
+      class="input"
       title = "Password"
       [control] = "password"
       placeholder = "At Least 4 Characters"
@@ -17,27 +24,40 @@
 
     <!-- Username -->
     <cInput
-    title = "User Name"
-    [control] = "username"
-    placeholder = "JDoe"
+      class="input"
+      title = "User Name"
+      [control] = "username"
+      placeholder = "JDoe"
   ></cInput>
-
+    </div>
+    <div class="center">
     <!-- Fullname -->
     <cInput
+      class="input"
       title = "Full Name"
       [control] = "fullname"
       placeholder = "John Doe"
     ></cInput>
 
-    <!-- Fullname -->
+      <!-- Phone -->
+      <cInput
+      class="input"
+      title = "Phone Number"
+      [control] = "phone"
+      placeholder = "xxx-xxx-xxxx"
+    ></cInput>
+
+    <!-- Address -->
     <cInput
+      class="input"
       title = "Address"
       [control] = "address"
       placeholder = "300 Pratt Street"
     ></cInput>
-
+    </div>
+    <div class="center">
     <!-- City -->
-    <mat-form-field appearance="fill">
+    <mat-form-field  class="select">
       <mat-label>City</mat-label>
       <mat-select [formControl]="city">
         <mat-option *ngFor="let c of cities" [value]="c">
@@ -47,7 +67,7 @@
     </mat-form-field>
 
     <!-- State -->
-    <mat-form-field appearance="fill">
+    <mat-form-field class="select">
       <mat-label>Status</mat-label>
       <mat-select [formControl]="state">
         <mat-option *ngFor="let s of states" [value]="s">
@@ -58,7 +78,7 @@
 
 
     <!-- Zip -->
-    <mat-form-field appearance="fill">
+    <mat-form-field class="select">
       <mat-label>Zip</mat-label>
       <mat-select [formControl]="zip">
         <mat-option *ngFor="let z of zips" [value]="z">
@@ -66,24 +86,23 @@
         </mat-option> 
       </mat-select>
     </mat-form-field>
-
-    <!-- Fullname -->
-    <cInput
-      title = "Phone Number"
-      [control] = "phone"
-      placeholder = "xxx-xxx-xxxx"
-    ></cInput>
+  </div>
 
 
 
-    <button
+    <div class="center">
+    <button 
+      class="submit"
       type="submit"
       [disabled]="!upsertForm.valid"
       color="primary" 
       mat-raised-button 
     >{{submitText}}</button>
-
+    </div>
 
   </form>
 
   <h2 class="error">{{error}}</h2>
+
+</div>
+</div>

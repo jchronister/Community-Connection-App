@@ -32,11 +32,13 @@
 <a mat-tab-link 
   [active]="activeLink === 'help-requests'"
   (click)="activeLink = 'help-requests'"
-  [routerLink]="['/','posts','help-requests']" 
+  [routerLink]="['/','posts','help-requests']"
+  [state]="{request : 'help-requests'}"
   *ngIf="loggedIn" >Help Requests</a>
 <a mat-tab-link 
   [active]="activeLink === 'service-requests'"
   (click)="activeLink = 'service-requests'"
+  [state]="{request :'service-requests'}"
   [routerLink]="['/','posts','help-requests']" 
   *ngIf="loggedIn">Service Providers</a>
 <a mat-tab-link 
@@ -49,7 +51,7 @@
   [routerLink]="['/','accounts','login']" 
   (click)="logout(0)" 
   *ngIf="loggedIn">Logout</a>
-  <a mat-tab-link disabled>Disabled Link</a>
+
 </nav>
 
 <router-outlet></router-outlet>

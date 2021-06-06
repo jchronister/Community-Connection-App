@@ -1,0 +1,65 @@
+<form class="example-form" (ngSubmit)="onSubmit()">
+
+     <input type="radio" id="help request" name="Type of request" value="help request">
+     <label for="help request">Help Request</label><br>
+
+     <input type="radio" id='service provider' name="Type of request" value="service provider">
+     <label for="service provider">Service Provider</label><br>
+
+     <!-- <mat-form-field class="example-full-width">
+          <mat-label>Company (disabled)</mat-label>
+          <input matInput disabled value="Google">
+     </mat-form-field> -->
+
+     <table class="example-full-width" cellspacing="0">
+          <tr>
+               <td>
+                    <mat-form-field class="example-full-width">
+                         <mat-label>City</mat-label>
+                         <input matInput>
+                    </mat-form-field>
+               </td>
+               <td>
+                    <mat-form-field class="example-full-width">
+                         <mat-label>State</mat-label>
+                         <input matInput>
+                    </mat-form-field>
+               </td>
+          </tr>
+     </table>
+
+     <p>
+          <mat-form-field class="example-full-width">
+               <mat-label>Description </mat-label>
+               <textarea matInput placeholder="Want to rent a truck"></textarea>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+               <mat-label>Address</mat-label>
+               <textarea matInput></textarea>
+          </mat-form-field>
+     </p>
+
+     <table class="example-full-width" cellspacing="0">
+          <tr>
+               <td>
+                    <mat-form-field class="example-full-width">
+                         <mat-label>City</mat-label>
+                         <input matInput placeholder="Ex. San Francisco">
+                    </mat-form-field>
+               </td>
+               <td>
+                    <mat-form-field class="example-full-width">
+                         <mat-label>State</mat-label>
+                         <input matInput placeholder="Ex. California">
+                    </mat-form-field>
+               </td>
+               <td>
+                    <mat-form-field class="example-full-width">
+                         <mat-label>Postal Code</mat-label>
+                         <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" value="94043">
+                         <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+                    </mat-form-field>
+               </td>
+          </tr>
+     </table>
+</form>

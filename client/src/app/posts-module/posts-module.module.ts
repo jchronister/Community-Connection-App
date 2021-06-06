@@ -4,6 +4,7 @@ import { PostsListComponent } from './posts-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { CommentsComponent } from './comments.component';
+import { CreatePostComponent } from './create-post.component';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -15,8 +16,11 @@ import {MatButtonModule} from '@angular/material/button';
   declarations: [
     PostsListComponent, 
     CommentsComponent,
-    CreatePost
+    CreatePost,
+    CreatePostComponent
   ],
+
+
   imports: [
     CommonModule,
     MatInputModule,

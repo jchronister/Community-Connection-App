@@ -16,8 +16,8 @@ import { Subscription } from 'rxjs';
   template: `
 
   <div class="input">
-    <h2>The One Community Forum</h2>
-  
+    <h2>Please Login or Continue as Guest</h2>
+    <h4>Guests are Only Allowed to View Content (No Posting)</h4>
     <form [formGroup] = signinForm (ngSubmit)="login()">
 
     <!-- Username -->

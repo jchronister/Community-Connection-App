@@ -13,17 +13,25 @@ export class AppComponent implements OnInit, OnDestroy{
 
   loggedIn = false
   subscriptions: Subscription | undefined
+  user : string | null = null
 
   constructor(private router: Router, private state: AccountState) {
-    this.state.subscribeToken( n => this.loggedIn = n !== "")
+    
+    // Get Current User
+    this.state.subscribeToken( n => {
+      this.loggedIn = n !== ""
+      this.user = this.state.getCurrentUserInfo().username
+    })
+
   }
 
   ngOnInit() {
     if (!this.loggedIn) this.router.navigate(['/','accounts','login'])
   }
 
-  logout() {
+  logout(no: number) {
     this.state.setToken("")
+    if (no) this.router.navigate(['/','accounts','login'])
   }
 
   ngOnDestroy() {

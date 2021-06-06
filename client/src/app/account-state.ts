@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import jwt_decode from "jwt-decode";
 import { IUser } from "./app.types";
 
@@ -36,7 +36,7 @@ export class AccountState {
     this._token.next(token)
   }
   
-  subscribeToken (fx: (val: string)=>{}) {
+  subscribeToken (fx: (value: string) => void) {
      return this._token.subscribe(fx) 
   }
 

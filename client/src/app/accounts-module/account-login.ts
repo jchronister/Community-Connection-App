@@ -141,7 +141,7 @@ export class AccountLogin implements OnInit, OnDestroy{
   
   continueAsGuest () {
     this.state.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs")
-    this.router.navigate(this.state.loggedInRedirect())
+    this.router.navigate(this.state.loggedInRedirect(), {state :{request : 'help-requests'}})
   }
 
   ngOnDestroy() {

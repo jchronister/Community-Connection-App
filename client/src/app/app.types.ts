@@ -31,3 +31,10 @@ export interface IServerObject {
   nModified: number | null;
   error: string | null;
 }
+
+export interface IForm {
+  "type" : string,
+  "city_state" : string,
+  "date" : string | Date,
+  "description" : string
+}

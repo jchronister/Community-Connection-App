@@ -7,9 +7,10 @@ import { CommentsComponent } from './comments.component';
 
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreatePostComponent } from './create-post.component';
 
 @NgModule({
-  declarations: [PostsListComponent, CommentsComponent],
+  declarations: [PostsListComponent, CommentsComponent, CreatePostComponent],
   imports: [
     CommonModule,
     MatInputModule,

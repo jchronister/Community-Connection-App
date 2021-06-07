@@ -5,12 +5,15 @@
       <span class="example-spacer"></span>
 
       <span>
-        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}}
+        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}} 
       </span>
       <button class="logout" *ngIf="user" (click)="logout(1)">Logout</button>
     </mat-toolbar-row>
   </mat-toolbar>
 </p>
+
+<!-- How does line 8 work??-->
+
 
 <nav mat-tab-nav-bar>
   <a mat-tab-link [active]="activeLink === 'login'" (click)="activeLink = 'login'"

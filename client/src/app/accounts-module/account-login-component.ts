@@ -128,7 +128,8 @@ export class AccountLogin implements OnInit, OnDestroy {
       (n) => {
         if (n.status === 'Success') {
           this.state.setToken(n.data);
-          this.router.navigate(this.state.loggedInRedirect());
+          const redirect = this.state.loggedInRedirect()
+          this.router.navigate(redirect.path, {state: redirect.state});
         } else {
           this.error = <string>n.error;
         }
@@ -144,9 +145,8 @@ export class AccountLogin implements OnInit, OnDestroy {
     this.state.setToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs'
     );
-    this.router.navigate(this.state.loggedInRedirect(), {
-      state: { request: 'all-requests' },
-    });
+    const redirect = this.state.loggedInRedirect()
+    this.router.navigate(redirect.path, {state: redirect.state});
   }
 
   ngOnDestroy() {

@@ -4,20 +4,16 @@
       <span>The One Community Forum</span>
       <span class="example-spacer"></span>
 
-      <mat-form-field >
-        <mat-label *ngIf="!location">Pick Location</mat-label>
-        <mat-select [formControl]="location" [disabled]="!loggedIn">
-          <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <span class="info">
-        {{user? user : 'Not Logged In '}}
+      <span>
+        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}} 
       </span>
       <button class="logout" *ngIf="user" (click)="logout(1)">Logout</button>
     </mat-toolbar-row>
   </mat-toolbar>
 </p>
+
+<!-- How does line 8 work??-->
+
 
 <nav mat-tab-nav-bar>
   <a mat-tab-link [active]="activeLink === 'login'" (click)="activeLink = 'login'"

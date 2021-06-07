@@ -36,7 +36,6 @@ export class CreatePostComponent implements OnInit {
       return;
     }
 
-    //TODO: here I want to get the value of current user data and data add it to my form.
     let dataObj = {
       ...this.myForm.value,
       date: new Date(),
@@ -46,15 +45,15 @@ export class CreatePostComponent implements OnInit {
     if (this.myForm.get('type')!.value == 'Help Request') {
       this.myService.newHelpRequest(dataObj).subscribe((data) => {
         if (data.status === 'Success') {
-          this.myForm.reset()
-          alert('Form submitted')
+          this.myForm.reset();
+          alert('Form submitted');
         }
-      }); //TODO: Have to fix the code
+      });
     } else {
       this.myService.newServiceProvider(dataObj).subscribe((data) => {
         if (data.status === 'Success') {
-          this.myForm.reset()
-          alert('Form submitted')
+          this.myForm.reset();
+          alert('Form submitted');
         }
       });
     }

@@ -133,13 +133,11 @@ router.route("/:id/comment")
 
     .get((req, res) => {})
     .put((req, res) => {
-        req.db.db
-            .collection("posts")
-            .updateOne(
-                { _id: req.params.id },
-                { $push: { comments: req.body } },
-                sendJSON.bind(res)
-            );
+        req.db.db.collection("posts").updateOne(
+            { _id : req.params.id }, //TODO: verifyMongoid is not defined
+            { $push: { comments: req.body } },
+            sendJSON.bind(res)
+        );
     });
 
 

@@ -31,8 +31,12 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatButtonModule,
     MatPaginatorModule,
     RouterModule.forChild([
-      { path: 'help-requests', component: PostsListComponent },
-      { path: 'createrequest', component: CreatePost },
+      { path: 'all-requests', component: PostsListComponent },
+      { path: 'help-requests', component: PostsListComponent },  //TODO: How to activate all-request active when logged in??
+      { path: 'service-providers', component: PostsListComponent },
+      { path: 'createrequest2', component: CreatePostComponent },
+      { path: 'request', component: CreatePost },
+      { path: '**', redirectTo :'all-requests' },
     ]),
   ],
   bootstrap: [PostsListComponent],

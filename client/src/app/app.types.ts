@@ -11,6 +11,7 @@ export interface IUser {
 }
 
 export interface IPosts {
+  _id ? : string;
   type: string;
   city_state: string;
   date: string;

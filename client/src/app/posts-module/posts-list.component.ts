@@ -23,27 +23,29 @@ export class PostsListComponent implements OnInit {
     private state: AccountState,
     public router: Router
   ) {
-    let x = this.router.getCurrentNavigation();
-    debugger
+    let x = this.router.getCurrentNavigation()!.extras.state!.request;
+    console.log(typeof x);
+    console.log(x);
+    // debugger
     this.type = this.router.getCurrentNavigation()!.extras.state!.request;
-  } //FIXME: have to fix the error
+  }
 
   onKey(e: Event) {
     this.inputValue = (<HTMLInputElement>e.target).value;
   }
 
-  addComment(post:IPosts) {
+  addComment(post: IPosts) {
     if (!this.inputValue) {
       return;
     }
-    let comment : IComments = {
+    let comment: IComments = {
       comment: this.inputValue,
       user: this.state.getCurrentUserInfo(),
       date: new Date(),
     };
+    
 
-
-    this.myService.sendComment(comment).subscribe((data: IServerObject) => {
+    this.myService.sendComment(<string>post._id ,comment).subscribe((data: IServerObject) => {
       if (data.status === 'Success') {
         post.comments.push(comment);
       }
@@ -57,19 +59,18 @@ export class PostsListComponent implements OnInit {
           this.posts = data.data;
         }
       });
-    }
-
-    if (this.type === 'service-providers') {
+    } else if (this.type === 'service-providers') {
       this.myService.getServiceProviders().subscribe((data) => {
         if (data.status === 'Success') {
           this.posts = data.data;
         }
       });
+    } else {
+      this.myService.getPosts().subscribe((data) => {
+        if (data.status === 'Success') {
+          this.posts = data.data;
+        }
+      });
     }
-    this.myService.getPosts().subscribe((data) => {
-      if (data.status === 'Success') {
-        this.posts = data.data;
-      }
-    });
   }
 }

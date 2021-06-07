@@ -18,9 +18,9 @@ export class AccountState {
   loggedInRedirect (): Array<string> {
 
     // Set Active Navigation Tab
-    this.setTab("help-requests")
+    this.setTab("all-requests")
 
-    return ["/", "posts", "help-requests"]
+    return ["/", "posts", "all-requests"]
   }
 
 
@@ -63,7 +63,7 @@ export class AccountState {
 
     const token = this.getToken()
 
-    const data: any = token ? jwt_decode(this.getToken()) : {}
+    const data: any = token ? jwt_decode(token) : {}
 
     const retrn = ["_id", "username", "name", "address", "city", "state", "zip", "phone", "email"]
       .reduce((a, n) => ({...a, [n]: data[n] || null}), {})

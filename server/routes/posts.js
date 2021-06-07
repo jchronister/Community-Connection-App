@@ -18,10 +18,11 @@ const router = require("express")();
 
 //posts all posts sort by date
 
-router.param('id', (req, res, next, id)=> {
-    if(verifyMongoId(req.params, 'id', next)){
+router.param("id", (req, res, next, id) => {
+    if (verifyMongoId(req.params, "id", next)) {
         next();
-    }})
+    }
+});
 
 router
     .route("/")
@@ -37,7 +38,7 @@ router
 
 //sort help_requests by date
 router
-    .route("/help_requests")
+    .route("/help-requests")
     .get((req, res) => {
         req.db.db
             .collection("posts")
@@ -53,22 +54,20 @@ router
 
 //insert comment in post with an :id
 router
-    .route("/:id/comment")
+    .route("/:id/comments")
 
     .get((req, res) => {})
     .put((req, res) => {
-        req.db.db
-            .collection("posts")
-            .updateOne(
-                { _id: req.params.id },
-                { $push: { comments: req.body } },
-                sendJSON.bind(res)
-            );
+        req.db.db.collection("posts").updateOne(
+            { _id : req.params.id }, //TODO: verifyMongoid is not defined
+            { $push: { comments: req.body } },
+            sendJSON.bind(res)
+        );
     });
 
 //post and get for posts of service providers
 router
-    .route("/service_providers")
+    .route("/service-providers")
     .get((req, res) => {
         req.db.db
             .collection("posts")

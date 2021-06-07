@@ -17,6 +17,10 @@ import { isPlatformServer } from '@angular/common';
 
     ".subtitle {margin-left:15px}",
 
+    ".background {background-color: #edddf8 }",
+
+    ".card {margin: 5px}",
+
     ".request:hover {color:red; cursor: pointer;}",
 
     ".comments {margin-left:55px}",
@@ -64,42 +68,19 @@ export class PostsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
- 
-    if (this.type === 'help-requests') {
-      this.myService.getHelpRequests().subscribe((data) => {
-        
-        if (data.status === 'Success') {
-          this.posts = data.data;
-        }
-      });
-    } else if (this.type === 'service-providers') {
-      this.myService.getServiceProviders().subscribe((data) => {
-        if (data.status === 'Success') {
-          this.posts = data.data;
-        }
-      });
-    } else {
-      this.myService.getPosts().subscribe((data: any) => {
-        if (data.status === 'Success') {
-          this.posts = data.data;
-        }
-      });
-    }
-    this.myService.getPosts().subscribe((data:any) => {
-  
-      if (data.body.status === 'Success') {
-      
 
-        // pipe(tap(n => {
+    this.myService.getRequests(this.type).subscribe((data: any) => {
+        debugger
+      if (data && data.body.status === 'Success') {
+        debugger
+        this.posts = data.body.data;
+
         //   const y = n.headers.get('Link')
         //   const l = this.parseLinkHeader(<string>y)
-        //   debugger
-        //   console.log(n)
-    
-        // }))
-        this.posts = data.body.data;
       }
+
     });
+
   }
 
 

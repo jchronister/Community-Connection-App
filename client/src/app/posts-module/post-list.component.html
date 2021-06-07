@@ -1,4 +1,5 @@
-<mat-card *ngFor="let post of posts">
+<div class="background">
+<mat-card *ngFor="let post of posts" class="card">
      <mat-card-header>
           <div mat-card-avatar></div>
           <mat-card-title>
@@ -42,3 +43,4 @@
               [pageSizeOptions]="[5, 25]"
               (page)="page($event)">>
 </mat-paginator>
+</div>

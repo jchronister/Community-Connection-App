@@ -23,30 +23,18 @@ export class MainServiceService {
     );
   }
 
-  getPosts(): any {
+  // getRequests(type?: string): Observable<HttpResponse<IServerObject>> {
+    // return this.http.get<HttpResponse<IServerObject>>(
+    getRequests(type?: string): any {
+      
+      // return this.http.get(
 
-    return this.http.get (this.url + '/api/v1/CS569FP/posts',{observe: "response"})
-
-  }
-
-  getHelpRequests(): Observable<IServerObject> {
-    return this.http.get<IServerObject>(
-      this.url + '/api/v1/CS569FP/posts/help-requests'
-    );
-  }
-
-  getRequests(type?: string): Observable<IServerObject> {
-    return this.http.get<IServerObject>(
-      this.url + '/api/v1/CS569FP/posts/' + type
-    );
+      return this.http.get (this.url + '/api/v1/CS569FP/posts' + (type ? "/?type=" + type : ""),{observe: "response"})
+      // this.url + '/api/v1/CS569FP/posts' + type ? "/?type=" + type : ""
+    // );
 
   }
 
-  getServiceProviders(): Observable<IServerObject> {
-    return this.http.get<IServerObject>(
-      this.url + '/api/v1/CS569FP/posts/service-providers'
-    );
-  }
 
   newHelpRequest(helpRequestPost: IPosts): Observable<IServerObject> {
     return this.http.post<IServerObject>(

@@ -38,6 +38,13 @@ router.route("/")
       const items = req.query.items || 25;
       const type = req.query.type;
 
+      // Setup Search Type
+      if (type === "help-requests") {
+        var matchType = {type : "Help Request"};
+      } else if (type === "service-providers") {
+        matchType = {type : "Service Provider"};
+      }
+
       // Change Key to Date if Needed
       if (key) {
         const numKey = Number(key);
@@ -82,9 +89,9 @@ router.route("/")
 
         case "next":
           search = [
-            {"$match": {"date": {$lt: keyDate}}},
-            {"$sort": {"date": -1}},
-            {"$limit": items},
+            {$match: {"date": {$lt: keyDate}}},
+            {$sort: {"date": -1}},
+            {$limit: items},
           ];
           break;
 
@@ -105,6 +112,7 @@ router.route("/")
       }
 
       // Query
+      if (matchType) search = [matchType, ...search];
       req.db.db.collection("posts").aggregate(search).toArray(sendResponse);
 
     })

@@ -11,13 +11,27 @@ import { isPlatformServer } from '@angular/common';
 @Component({
   selector: 'app-posts-list',
   templateUrl: './post-list.component.html',
-  styles: [],
+  styles: [
+
+    ".request {font-size:200%; background-color:white; border:none; text-align:left}",
+
+    ".subtitle {margin-left:15px}",
+
+    ".request:hover {color:red; cursor: pointer;}",
+
+    ".comments {margin-left:55px}",
+
+    ".addComment {margin-left:100px}",
+
+    ".input {padding: 10px; border-radius: 5px; border-width:1px; width:200px}"
+  ],
 })
 export class PostsListComponent implements OnInit {
   posts: Array<IPosts> = [];
   inputValue: string = '';
   type: string = '';
   pathOptions = {first:"", prev:"", next:"", last:""}
+  showComment: any = {}
 
   constructor(
     private myService: MainServiceService,
@@ -101,4 +115,18 @@ export class PostsListComponent implements OnInit {
 
 
   } 
+
+
+  showComments(id: string) {
+
+    // Get Current Show Status
+    const tgl = this.showComment[id]
+
+    // true if undefined else Toggle Show
+    this.showComment[id] = tgl === undefined ? true : !tgl
+
+  }
+
+
+
 }

@@ -11,7 +11,7 @@ export interface IUser {
 }
 
 export interface IPosts {
-  _id ? : string;
+  _id : string;
   type: string;
   city_state: string;
   date: string;
@@ -38,4 +38,20 @@ export interface IForm {
   "city_state" : string,
   "date" : string | Date,
   "description" : string
+}
+
+
+export function  newIUser () {
+
+  return {
+  _id: "",
+  username: "",
+  name: "",
+  address: "",
+  city: "",
+  state: "",
+  zip: 0,
+  phone: "",
+  email: "",
+  }
 }

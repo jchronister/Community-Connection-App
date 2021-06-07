@@ -23,7 +23,7 @@
      </mat-card-content>
 
 
-     <mat-card-actions class="addComment">
+     <mat-card-actions class="addComment" *ngIf="!guest">
         <input
         class="input"
         type="text"

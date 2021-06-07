@@ -54,17 +54,20 @@ export class AccountState {
   }
 
   // Token
-  private readonly _token = new BehaviorSubject<string>('');
+  // private readonly _token = new BehaviorSubject<string>('');
+  private readonly _token = new Subject();
+  private _tokenValue = ""
 
   getToken(): string {
-    return this._token.getValue();
+    return this._tokenValue;
   }
 
   setToken(token: string): void {
+    this._tokenValue = token
     this._token.next(token);
   }
 
-  subscribeToken(fx: (value: string) => void) {
+  subscribeToken(fx: (value: unknown) => void) {
     return this._token.subscribe(fx);
   }
 

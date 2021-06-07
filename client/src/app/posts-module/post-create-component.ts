@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
 import { AccountState } from "../account-state"
+import { IServerObject } from "../app.types";
 import { MainServiceService } from "./main-service.service"
 
 @Component({
@@ -44,11 +46,13 @@ import { MainServiceService } from "./main-service.service"
 ,styles:[".txt {width: 300px}"]
 
 })
-export class CreatePost{
+export class CreatePost implements OnDestroy{
 
   requestForm: FormGroup
   type: FormControl
   description: FormControl
+  error = ""
+  subscription: Subscription | undefined
 
   constructor (private state: AccountState, private http: MainServiceService) {
 
@@ -63,35 +67,28 @@ export class CreatePost{
 
     })
 
+    this.subscription = this.requestForm.valueChanges.subscribe ( () => this.error = "")
+
   }
 
 
   createRequest () {
 
-    const requestData = {
-      ...this.requestForm.value,
-      user: this.state.getCurrentUserInfo(),
-      date: new Date()
-      
-    }
-  
+      this.error = ""
 
-    // this.http.createPost(requestData).subscribe ( n => {
+      this.http.postRequest(this.requestForm.value).subscribe( (n: IServerObject) => {
 
-    //   if (n.status === "Success") {
+        if (n.status === "Success") {
+          alert("Request Added")
+          this.requestForm.reset()     
+        } else {
+          this.error = "Error Adding Request: " + n.error
+        }
+      })
+  }
 
-
-
-    //   }
-
-    // })
-
-    // createPost(postData) : Observable <IServerObject>{
-    //   return this.http.post<IServerObject>(this.url + '/api/v1/CS569FP/posts', postData);
-    // }
-
-
-
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe()
   }
 
 }

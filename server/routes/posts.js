@@ -1,6 +1,7 @@
 "use strict";
 
 const createHttpError = require("http-errors");
+const { isValidUser } = require("../middleware/authentication");
 const { sendJSON } = require("../middleware/return-object");
 const { verifyMongoId } = require("../middleware/verify-data");
 const router = require("express")();
@@ -25,7 +26,6 @@ router.param('id', (req, res, next)=> {
         next();
     }
 });
-
 
 // /posts
 router.route("/")
@@ -114,8 +114,6 @@ router.route("/")
 
       }
 
-      // Query
-
       // Add 48 Hours
         search = [{$match: {date: {$gte: validPostDate}}}, ...search];
 
@@ -126,29 +124,16 @@ router.route("/")
 
     })
     
-    .post((req, res) => {});
-
-
-//sort help_requests by date
-router.route("/help_requests")
-    .get((req, res) => {
-        req.db.db
-            .collection("posts")
-            .find({ type: "Help Request" })
-            .sort({ date: -1 })
-            .toArray(sendJSON.bind(res));
-    })
-
-    //to insert a help request
-    .post((req, res) => {
-        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
+    .post(isValidUser, verifyPostData, (req, res) => {
+      req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
     });
+
+
 
 
 //insert comment in post with an :id
 router.route("/:id/comments")
 
-    .get((req, res) => {})
     .post((req, res) => {
         req.db.db.collection("posts").updateOne(
             { _id : req.params.id }, 
@@ -157,20 +142,37 @@ router.route("/:id/comments")
         );
     });
 
-
-//post and get for posts of service providers
-router.route("/service_providers")
-    .get((req, res) => {
-        req.db.db
-            .collection("posts")
-            .find({ type: "Service Provider" })
-            .sort({ date: -1 })
-            .toArray(sendJSON.bind(res));
-    })
-
-    //to insert a help request
-    .post((req, res) => {
-        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
-    });
-
 module.exports = router;
+
+
+
+function verifyPostData (req, res, next) {
+
+  const type = req.body.type;
+  const description = req.body.description;
+
+  // Verify Type of Request
+  if (type !== "Help Request" && type !== "Service Provider") {
+    next(createHttpError(400, "Invalid Type"));
+  }
+ 
+  // Verify Description
+  if (!description) {
+    next(createHttpError(400, "Invalid Description"));
+  }
+
+  // Get User Info
+  const {_id, username, state, phone, name, email, city, address, zip} = req.db.user;
+
+  // Create Data Object
+  req.body = {
+    type,
+    description,
+    user: {_id, username, state, phone, name, email, city, address, zip},
+    date: new Date(),
+    comments: [],
+    completed: false
+  };
+
+  next();
+}

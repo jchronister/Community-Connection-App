@@ -90,11 +90,11 @@ export class AccountLogin implements OnInit, OnDestroy {
     private http: UserHttp,
     private state: AccountState
   ) {
-    this.username = new FormControl('', [
+    this.username = new FormControl('bregmi@miu.edu', [
       Validators.required,
       Validators.email,
     ]);
-    this.password = new FormControl('', [
+    this.password = new FormControl('1234', [
       Validators.required,
       passwordVerification,
     ]);

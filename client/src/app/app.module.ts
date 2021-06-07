@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {MatSelectModule} from '@angular/material/select';
 
 
 // Styles
@@ -13,6 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AccountState } from './account-state';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { UserIntercepter } from './http-interceptor';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -25,7 +26,9 @@ import { UserIntercepter } from './http-interceptor';
     BrowserAnimationsModule,
     MatTabsModule,
     HttpClientModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   providers: [AccountState,
     { provide: HTTP_INTERCEPTORS, useClass: UserIntercepter , multi: true }

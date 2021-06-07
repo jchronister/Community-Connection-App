@@ -4,8 +4,15 @@
       <span>The One Community Forum</span>
       <span class="example-spacer"></span>
 
-      <span>
-        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}}
+      <mat-form-field >
+        <mat-label *ngIf="!location">Pick Location</mat-label>
+        <mat-select [formControl]="location" [disabled]="!loggedIn">
+          <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="info">
+        {{user? user : 'Not Logged In '}}
       </span>
       <button class="logout" *ngIf="user" (click)="logout(1)">Logout</button>
     </mat-toolbar-row>
@@ -19,8 +26,8 @@
   <a mat-tab-link [active]="activeLink === 'createaccount'" (click)="activeLink = 'createaccount'"
     [routerLink]="['/','accounts','createaccount']" *ngIf="!loggedIn">Create Account</a>
 
-  <a mat-tab-link [active]="activeLink === 'createaccount2'" (click)="activeLink = 'createaccount2'"
-    [routerLink]="['/','posts','createrequest2']" *ngIf="loggedIn">Bipin's Create Post</a>
+  <!-- <a mat-tab-link [active]="activeLink === 'createaccount2'" (click)="activeLink = 'createaccount2'"
+    [routerLink]="['/','posts','createrequest2']" *ngIf="loggedIn">Bipin's Create Post</a> -->
 
   <a mat-tab-link [active]="activeLink === 'createrequest'" (click)="activeLink = 'createrequest'"
     [routerLink]="['/','posts','request']" *ngIf="loggedIn">Create Request</a>

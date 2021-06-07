@@ -1,12 +1,10 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MainServiceService } from './main-service.service';
 
-import { IUser, IPosts, IServerObject, IComments, newIPosts } from '../app.types';
-import { Observable } from 'rxjs';
+import { IPosts, IServerObject, IComments, } from '../app.types';
 import { AccountState } from '../account-state';
 import { Router } from '@angular/router';
-import { isPlatformServer } from '@angular/common';
+
 
 @Component({
   selector: 'app-posts-list',
@@ -37,6 +35,7 @@ export class PostsListComponent implements OnInit {
   pathOptions = {first:"", prev:"", next:"", last:""}
   showComment: any = {}
   error = ""
+  guest = true;
 
   constructor(
     private myService: MainServiceService,
@@ -44,6 +43,7 @@ export class PostsListComponent implements OnInit {
     public router: Router
   ) {
     this.type = this.router.getCurrentNavigation()!.extras.state!.request;
+    this.guest = this.state.getCurrentUserInfo().username === "guest"
   }
 
   onKey(e: Event) {

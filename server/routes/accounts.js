@@ -13,7 +13,6 @@ router.route("/login")
 
 // accounts
 router.route("/")
-  .get( (req, res) => {})
   .post(verifyCreateAccountData, createAccount);
 
 

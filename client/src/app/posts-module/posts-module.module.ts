@@ -11,6 +11,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatePost } from './post-create-component';
 import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {MatButtonModule} from '@angular/material/button';
     ReactiveFormsModule,
     MatSelectModule,
     MatButtonModule,
+    MatPaginatorModule,
     RouterModule.forChild([
       { path: 'help-requests', component: PostsListComponent },
       { path: 'createrequest', component: CreatePost },

@@ -17,14 +17,14 @@ export class PostsListComponent implements OnInit {
   posts: Array<IPosts> = [];
   inputValue: string = '';
   type: string = '';
+  pathOptions = {first:"", prev:"", next:"", last:""}
 
   constructor(
     private myService: MainServiceService,
     private state: AccountState,
     public router: Router
   ) {
-    let x = this.router.getCurrentNavigation();
-    debugger
+
     this.type = this.router.getCurrentNavigation()!.extras.state!.request;
   } //FIXME: have to fix the error
 
@@ -51,8 +51,10 @@ export class PostsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+ 
     if (this.type === 'help-requests') {
       this.myService.getHelpRequests().subscribe((data) => {
+        
         if (data.status === 'Success') {
           this.posts = data.data;
         }
@@ -66,10 +68,34 @@ export class PostsListComponent implements OnInit {
         }
       });
     }
-    this.myService.getPosts().subscribe((data) => {
-      if (data.status === 'Success') {
-        this.posts = data.data;
+    this.myService.getPosts().subscribe((data:any) => {
+  
+      if (data.body.status === 'Success') {
+      
+
+        // pipe(tap(n => {
+        //   const y = n.headers.get('Link')
+        //   const l = this.parseLinkHeader(<string>y)
+        //   debugger
+        //   console.log(n)
+    
+        // }))
+        this.posts = data.body.data;
       }
     });
   }
+
+
+  page ($event:any) {
+    console.log($event)
+
+    // getRequests
+
+//     length: 100
+// pageIndex: 4
+// pageSize: 5
+// previousPageIndex: 2
+
+
+  } 
 }

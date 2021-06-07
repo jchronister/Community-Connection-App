@@ -19,3 +19,10 @@
      </mat-card-actions>
      <button >Create new {{type}}</button>
 </mat-card>
+
+<mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 25]"
+              firstPageLabel="first"
+              (page)="page($event)">>
+</mat-paginator>

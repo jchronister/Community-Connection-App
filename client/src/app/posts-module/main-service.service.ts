@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable} from 'rxjs';
+import { tap} from 'rxjs/operators';
 import { AccountState } from '../account-state';
 
 import { IUser, IPosts, IServerObject, IComments } from '../app.types';
@@ -22,14 +23,23 @@ export class MainServiceService {
     );
   }
 
-  getPosts(): Observable<IServerObject> {
-    return this.http.get<IServerObject>(this.url + '/api/v1/CS569FP/posts');
+  getPosts(): any {
+
+    return this.http.get (this.url + '/api/v1/CS569FP/posts',{observe: "response"})
+
   }
 
   getHelpRequests(): Observable<IServerObject> {
     return this.http.get<IServerObject>(
       this.url + '/api/v1/CS569FP/posts/help-requests'
     );
+  }
+
+  getRequests(type?: string): Observable<IServerObject> {
+    return this.http.get<IServerObject>(
+      this.url + '/api/v1/CS569FP/posts/' + type
+    );
+
   }
 
   getServiceProviders(): Observable<IServerObject> {
@@ -51,4 +61,18 @@ export class MainServiceService {
       serviceProviderPost
     );
   }
+
+
+  // Parse Header Links into Object
+  parseLinkHeader(header: string): any {
+
+    if (header.length === 0) return 
+
+    return header.split(',').reduce((a: any, n) => {
+      let section = n.split(';');
+      return {...a, [section[1].replace(/rel="(.*)"/, '$1').trim()]: section[0].replace(/<(.*)>/, '$1').trim()}
+    }, {})
+    
+  }  
+
 }

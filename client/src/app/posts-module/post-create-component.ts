@@ -72,6 +72,7 @@ export class CreatePost{
       ...this.requestForm.value,
       user: this.state.getCurrentUserInfo(),
       date: new Date()
+      
     }
   
 

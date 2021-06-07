@@ -114,7 +114,8 @@ export class AccountUpsert implements OnInit{
       debugger 
       if (n.status === "Success") {
         this.appState.setToken(n.data)
-        this.router.navigate(this.appState.loggedInRedirect())
+        const redirect = this.appState.loggedInRedirect()
+        this.router.navigate(redirect.path, {state: redirect.state});
       } else {
         this.error = <string>n.error
       }

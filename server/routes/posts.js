@@ -129,12 +129,12 @@ router.route("/help_requests")
 
 
 //insert comment in post with an :id
-router.route("/:id/comment")
+router.route("/:id/comments")
 
     .get((req, res) => {})
-    .put((req, res) => {
+    .post((req, res) => {
         req.db.db.collection("posts").updateOne(
-            { _id : req.params.id }, //TODO: verifyMongoid is not defined
+            { _id : req.params.id }, 
             { $push: { comments: req.body } },
             sendJSON.bind(res)
         );

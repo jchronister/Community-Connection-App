@@ -17,7 +17,7 @@ export class MainServiceService {
   }
 
   sendComment(id: string,comment: IComments): Observable<IServerObject> {
-    return this.http.put<IServerObject>(
+    return this.http.post<IServerObject>(
       this.url + `/api/v1/CS569FP/posts/${id}/comments`,
       comment
     );

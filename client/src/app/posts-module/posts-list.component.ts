@@ -17,7 +17,7 @@ import { isPlatformServer } from '@angular/common';
 
     ".subtitle {margin-left:15px}",
 
-    ".request:hover {color:red; cursor: pointer;}",
+    ".request:hover {color:purple; cursor: pointer;}",
 
     ".comments {margin-left:55px}",
 

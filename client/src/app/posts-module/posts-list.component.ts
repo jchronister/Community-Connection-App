@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MainServiceService } from './main-service.service';
 
-import { IUser, IPosts, IServerObject, IComments } from '../app.types';
+import { IUser, IPosts, IServerObject, IComments, newIPosts } from '../app.types';
 import { Observable } from 'rxjs';
 import { AccountState } from '../account-state';
 import { Router } from '@angular/router';
@@ -36,6 +36,7 @@ export class PostsListComponent implements OnInit {
   type: string = '';
   pathOptions = {first:"", prev:"", next:"", last:""}
   showComment: any = {}
+  error = ""
 
   constructor(
     private myService: MainServiceService,
@@ -70,13 +71,17 @@ export class PostsListComponent implements OnInit {
   ngOnInit(): void {
 
     this.myService.getRequests(this.type).subscribe((data: any) => {
-        debugger
+      
       if (data && data.body.status === 'Success') {
-        debugger
+       
         this.posts = data.body.data;
 
         //   const y = n.headers.get('Link')
         //   const l = this.parseLinkHeader(<string>y)
+        if (this.posts.length === 0) {
+          this.error = "No Valid Data"
+        }
+        
       }
 
     });

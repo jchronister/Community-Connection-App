@@ -40,9 +40,9 @@ router.route("/")
 
       // Setup Search Type
       if (type === "help-requests") {
-        var matchType = {type : "Help Request"};
+        var matchType = {$match: {type : "Help Request"}};
       } else if (type === "service-providers") {
-        matchType = {type : "Service Provider"};
+        matchType = {$match: {type : "Service Provider"}};
       }
 
       // Change Key to Date if Needed
@@ -55,10 +55,13 @@ router.route("/")
         }
       }
 
+      // Get Only Last 48 Hour Posts  17,280,000 = (48 * 60 * 60 * 1000)
+      const validPostDate = new Date(Date.now() - 172800000);
+
       // Send Links
       const sendResponse = (err, data) => {
 
-        if (data) {  
+        if (data.length) {  
           // Setup Return Link Options       
           res.links({
             first: '?page=first&key=0',
@@ -112,7 +115,13 @@ router.route("/")
       }
 
       // Query
+
+      // Add 48 Hours
+        search = [{$match: {date: {$gte: validPostDate}}}, ...search];
+
+      // Add Type of Match
       if (matchType) search = [matchType, ...search];
+
       req.db.db.collection("posts").aggregate(search).toArray(sendResponse);
 
     })

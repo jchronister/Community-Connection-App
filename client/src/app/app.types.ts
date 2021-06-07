@@ -55,3 +55,25 @@ export function  newIUser () {
   email: "",
   }
 }
+
+export function newIPosts () {
+
+  return {
+    _id : "",
+    type: "",
+    city_state: "",
+    date: "",
+    description: "",
+    user: newIUser (),
+    comments: [newIComments ()]
+  }
+}
+
+export function newIComments () {
+  
+  return {
+  comment: "",
+  user: newIUser (),
+  date: ""
+  }
+}

@@ -25,17 +25,17 @@ export class MainServiceService {
 
   // getRequests(type?: string): Observable<HttpResponse<IServerObject>> {
     // return this.http.get<HttpResponse<IServerObject>>(
-    getRequests(type?: string): any {
-      
-      // return this.http.get(
+  getRequests(type?: string): any {
 
-      return this.http.get (this.url + '/api/v1/CS569FP/posts' + (type ? "/?type=" + type : ""),{observe: "response"})
-      // this.url + '/api/v1/CS569FP/posts' + type ? "/?type=" + type : ""
-    // );
+    return this.http.get (this.url + '/api/v1/CS569FP/posts' + (type ? "/?" + type : ""),{observe: "response"})
 
   }
 
-
+  postRequest (request: {type: string, description: string}): Observable<IServerObject> {
+    return this.http.post<IServerObject>(
+      this.url + '/api/v1/CS569FP/posts', request
+    );
+  }
   newHelpRequest(helpRequestPost: IPosts): Observable<IServerObject> {
     return this.http.post<IServerObject>(
       this.url + '/api/v1/CS569FP/posts/help-requests',

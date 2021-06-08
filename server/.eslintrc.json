@@ -9,7 +9,7 @@
         "ecmaVersion": 12
     },
     "rules": {
-      "id-length": [2, {"min": 2, "max": 30, "exceptions": ["n", "i","j"]}],
+      "id-length": [2, {"min": 2, "max": 30, "exceptions": ["a", "n", "i","j"]}],
       "quotes": "off",
       "require-jsdoc": "off"
     }

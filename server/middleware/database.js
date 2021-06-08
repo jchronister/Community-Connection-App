@@ -43,6 +43,7 @@ let passDBConnection = function (req, res, next) {
         collectionName: "",
         id: null,
         baseUrl: "",
+        user: null,
         username: "",
         role: "",
         tokenFx: ({ _id, username, name, address, city, state, zip, phone, email }) => 

@@ -1,6 +1,7 @@
 "use strict";
 
 const createHttpError = require("http-errors");
+const { isValidUser } = require("../middleware/authentication");
 const { sendJSON } = require("../middleware/return-object");
 const { verifyMongoId } = require("../middleware/verify-data");
 const router = require("express")();
@@ -26,33 +27,25 @@ router.param('id', (req, res, next)=> {
     }
 });
 
-
 // /posts
 router.route("/")
 
-    .get((req, res, next) => {
+    .get((req, res) => {
 
       // Check for Query Parameters
-      const page = req.query.page;
-      const key = req.query.key;
-      const items = req.query.items || 25;
-      const type = req.query.type;
+      const items = +req.query.items || 25;
+      
+      // Convert Page to Number
+      const strPage = req.query.page;
+      const pageCheck = Number(strPage);
+      const page = isNaN(pageCheck) ? 0 : pageCheck;
 
       // Setup Search Type
+      const type = req.query.type;
       if (type === "help-requests") {
         var matchType = {$match: {type : "Help Request"}};
       } else if (type === "service-providers") {
         matchType = {$match: {type : "Service Provider"}};
-      }
-
-      // Change Key to Date if Needed
-      if (key) {
-        const numKey = Number(key);
-        if (isNaN(numKey)) {
-          next(createHttpError(400, "Invalid Key, Must be a Number"));
-        } else {
-          var keyDate = new Date(numKey);
-        }
       }
 
       // Get Only Last 48 Hour Posts  17,280,000 = (48 * 60 * 60 * 1000)
@@ -61,94 +54,58 @@ router.route("/")
       // Send Links
       const sendResponse = (err, data) => {
 
-        if (data.length) {  
-          // Setup Return Link Options       
-          res.links({
-            first: '?page=first&key=0',
-            prev: '?page=prev&key=' + Date.parse(data[0].date),
-            next: '?page=next&key=' + Date.parse(data[data.length - 1].date),
-            last: '?page=last&key=0'
-          });
+        // Create Query String
+        const query = Object.entries(req.query).reduce((a, [key, value], i) => {
 
-          res.set('Access-Control-Expose-Headers', 'Link');
+          // Get All Query Except Page
+          if (key !== "page") {
+            a += (i > 0 ? "&" : "") +key + "=" + value;
+          }
+
+          return a;
+        },"");
+
+
+        // Setup Return Link Options       
+        res.links({
+          first: query + '&page=0',
+          prev: query + '&page=' + ((page - 1) < 0 ? 0 : page - 1),
+          next: query + '&page=' + (page + 1),
+        });
+
+        // Needed to Read Header in Browser
+        res.set('Access-Control-Expose-Headers', 'Link');
           
-        }
-
         sendJSON.call(res, err, data);
 
       };
 
+      // Search Query
+      let search = [
+        {$match: {date: {$gte: validPostDate}, "user.state": req.query.state, "user.city": req.query.city}},
+        {$sort: {date: -1}},
+        {$skip: page * items},
+        {$limit: items},
+      ];
 
-      switch (page) {
-
-        case "prev":
-          var search = [
-            {$match: {date: {$gt: keyDate}}},
-            {$sort: {date: 1}},
-            {$limit: items},
-            {$sort: {date: -1}}
-          ];
-          break;
-
-        case "next":
-          search = [
-            {$match: {"date": {$lt: keyDate}}},
-            {$sort: {"date": -1}},
-            {$limit: items},
-          ];
-          break;
-
-        case "last":
-          search = [
-            {$sort: {date: 1}},
-            {$limit: items},
-            {$sort: {date: -1}}
-          ];
-          break;
-
-        default:
-          search = [
-            {$sort: {date: -1}},
-            {$limit: items},
-          ];
-
-      }
-
-      // Query
-
-      // Add 48 Hours
-        search = [{$match: {date: {$gte: validPostDate}}}, ...search];
-
+      
       // Add Type of Match
       if (matchType) search = [matchType, ...search];
 
       req.db.db.collection("posts").aggregate(search).toArray(sendResponse);
 
-    })
+ })
     
-    .post((req, res) => {});
-
-
-//sort help_requests by date
-router.route("/help_requests")
-    .get((req, res) => {
-        req.db.db
-            .collection("posts")
-            .find({ type: "Help Request" })
-            .sort({ date: -1 })
-            .toArray(sendJSON.bind(res));
-    })
-
-    //to insert a help request
-    .post((req, res) => {
-        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
+    .post(isValidUser, verifyPostData, (req, res) => {
+      req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
     });
+
+
 
 
 //insert comment in post with an :id
 router.route("/:id/comments")
 
-    .get((req, res) => {})
     .post((req, res) => {
         req.db.db.collection("posts").updateOne(
             { _id : req.params.id }, 
@@ -157,20 +114,37 @@ router.route("/:id/comments")
         );
     });
 
-
-//post and get for posts of service providers
-router.route("/service_providers")
-    .get((req, res) => {
-        req.db.db
-            .collection("posts")
-            .find({ type: "Service Provider" })
-            .sort({ date: -1 })
-            .toArray(sendJSON.bind(res));
-    })
-
-    //to insert a help request
-    .post((req, res) => {
-        req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
-    });
-
 module.exports = router;
+
+
+
+function verifyPostData (req, res, next) {
+
+  const type = req.body.type;
+  const description = req.body.description;
+
+  // Verify Type of Request
+  if (type !== "Help Request" && type !== "Service Provider") {
+    next(createHttpError(400, "Invalid Type"));
+  }
+ 
+  // Verify Description
+  if (!description) {
+    next(createHttpError(400, "Invalid Description"));
+  }
+
+  // Get User Info
+  const {_id, username, state, phone, name, email, city, address, zip} = req.db.user;
+
+  // Create Data Object
+  req.body = {
+    type,
+    description,
+    user: {_id, username, state, phone, name, email, city, address, zip},
+    date: new Date(),
+    comments: [],
+    completed: false
+  };
+
+  next();
+}

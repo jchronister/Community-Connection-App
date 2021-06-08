@@ -54,17 +54,20 @@ export class AccountState {
   }
 
   // Token
-  private readonly _token = new BehaviorSubject<string>('');
+  // private readonly _token = new BehaviorSubject<string>('');
+  private readonly _token = new Subject();
+  private _tokenValue = ""
 
   getToken(): string {
-    return this._token.getValue();
+    return this._tokenValue;
   }
 
   setToken(token: string): void {
+    this._tokenValue = token
     this._token.next(token);
   }
 
-  subscribeToken(fx: (value: string) => void) {
+  subscribeToken(fx: (value: unknown) => void) {
     return this._token.subscribe(fx);
   }
 
@@ -93,4 +96,22 @@ export class AccountState {
   getProperty(path: string, object: any, splitChr = '.'): any {
     return path.split(splitChr).reduce((a, n) => a && a[n], object);
   }
+
+
+  private _location = ""
+  private readonly _locationSub = new Subject();
+  setLocation(location: string) {
+    this._location = location
+    this._locationSub.next(location)
+  }
+
+  getLocation() {
+    return this._location
+  }
+
+  subscribeLocation(fx: (value: unknown) => void) {
+    return this._locationSub .subscribe(fx);
+  }
+
+
 }

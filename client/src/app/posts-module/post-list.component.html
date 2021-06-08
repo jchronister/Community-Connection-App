@@ -28,9 +28,13 @@
         <app-comments *ngFor="let comment of post.comments" [comment]="comment"></app-comments>
       </mat-card-content>
 
-
-      <mat-card-actions class="addComment">
-        <input class="input" type="text" placeholder="Your comment here" (keyup)="onKey($event)">
+      
+     <mat-card-actions class="addComment" *ngIf="!guest">
+        <input
+        class="input"
+        type="text"
+        placeholder="Your comment here"
+        (keyup)="onKey($event)">
 
         <button color="primary" mat-raised-button mat-button (click)="addComment(post)">Add Comment</button>
 
@@ -38,6 +42,9 @@
     </div>
   </mat-card>
 
-  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 25]" (page)="page($event)">>
-  </mat-paginator>
+<mat-paginator [length]="totalPages"
+              [pageSize]="pageSize"
+              [pageSizeOptions]="[5, 25]"
+              (page)="page($event)">>
+</mat-paginator>
 </div>

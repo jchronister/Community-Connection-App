@@ -1,12 +1,11 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MainServiceService } from './main-service.service';
 
-import { IUser, IPosts, IServerObject, IComments, newIPosts } from '../app.types';
-import { Observable } from 'rxjs';
+import { IPosts, IServerObject, IComments, } from '../app.types';
 import { AccountState } from '../account-state';
 import { Router } from '@angular/router';
-import { isPlatformServer } from '@angular/common';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-posts-list',
@@ -44,6 +43,12 @@ export class PostsListComponent implements OnInit {
   showComment: any = {}
   error = "";
   byUserToggle :any ={};
+  guest = true;
+  subscriptions: Subscription
+  pageSize = 5
+  links: any = {}
+  totalPages = 100
+  currentPage = 1
 
   constructor(
     private myService: MainServiceService,
@@ -51,6 +56,9 @@ export class PostsListComponent implements OnInit {
     public router: Router
   ) {
     this.type = this.router.getCurrentNavigation()!.extras.state!.request;
+    this.guest = this.state.getCurrentUserInfo().username === "guest"
+
+    this.subscriptions = this.state.subscribeLocation(() => {this.getPosts()})
   }
 
   onKey(e: Event) {
@@ -83,35 +91,83 @@ export class PostsListComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.myService.getRequests(this.type).subscribe((data: any) => {
-      
-      if (data && data.body.status === 'Success') {
-       
-        this.posts = data.body.data;
-
-        //   const y = n.headers.get('Link')
-        //   const l = this.parseLinkHeader(<string>y)
-        if (this.posts.length === 0) {
-          this.error = "No Valid Data"
-        }
-        
-      }
-
-    });
+    this.getPosts ()
 
   }
 
 
+  getPosts (direction?: string) {
+
+    // Clear Errors
+    this.error = ""
+
+    const location = this.state.getLocation()
+
+    if (!location) {
+      this.error = "Please Select Location"
+    } else {
+
+      const [city, state] = location.split("-")
+
+      // Next / Previous
+      let directionQuery = ""
+      if (direction) {
+
+        if (this.links[direction]) {
+          directionQuery = this.links[direction] + "&"
+        }
+
+      }
+
+      // Http Request
+      this.myService.getRequests(directionQuery || ("items=" + this.pageSize + "&city=" + city + "&state=" + state + "&type=" + this.type)).subscribe((data: any) => {
+       
+        if (data && data.body.status === 'Success') {
+        
+          this.posts = data.body.data;
+
+          // Read First/Next/Prev Links from Header
+          const links = data.headers.get('Link')
+          this.links = links ? this.myService.parseLinkHeader(<string>links) : {}
+
+          if (this.posts.length === 0) {
+            this.error = "No Valid Data"
+          }
+          
+        }
+
+      });
+    }
+
+  }
+
+
+
+
+
+  // Prev / Next / Same Page
   page ($event:any) {
-    console.log($event)
+   
+    // Set Page Item Size
+    this.pageSize = $event.pageSize
 
-    // getRequests
 
-//     length: 100
-// pageIndex: 4
-// pageSize: 5
-// previousPageIndex: 2
+    if ($event.pageIndex > $event.previousPageIndex) {
 
+      // Move Next
+      this.getPosts("next")
+      this.currentPage++
+
+    } else if ($event.pageIndex < $event.previousPageIndex){
+
+      // Move Previous
+      this.getPosts("prev")
+      this.currentPage--
+
+    } else {
+      // Size Change
+      this.getPosts()
+    }
 
   } 
 
@@ -126,6 +182,13 @@ export class PostsListComponent implements OnInit {
 
   }
 
+  ngAfterViewChecked() {
+    const list = document.getElementsByClassName('mat-paginator-range-label');
+    list[0].innerHTML = 'Page: ' + this.currentPage.toString();
+  }
 
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
+  }
 
 }

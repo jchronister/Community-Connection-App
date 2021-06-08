@@ -16,7 +16,7 @@ export class UserIntercepter implements HttpInterceptor {
 
     const token = this.state.getToken()
     const cloneReq = req.clone({headers: req.headers.set("authorization", token)})
-    return next.handle(req)
+    return next.handle(cloneReq)
     // return next.handle(req)//.pipe(
 
     

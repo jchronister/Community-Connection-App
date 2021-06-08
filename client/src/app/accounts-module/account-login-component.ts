@@ -48,7 +48,7 @@ import { Subscription } from 'rxjs';
               type="text"
               matInput
               [formControl]="password"
-              placeholder="At Least 5 Characters"/>
+              placeholder="At Least 4 Characters"/>
           </mat-form-field>
 
           <div class="center">
@@ -90,11 +90,11 @@ export class AccountLogin implements OnInit, OnDestroy {
     private http: UserHttp,
     private state: AccountState
   ) {
-    this.username = new FormControl('', [
+    this.username = new FormControl('bregmi@miu.edu', [
       Validators.required,
       Validators.email,
     ]);
-    this.password = new FormControl('', [
+    this.password = new FormControl('1234', [
       Validators.required,
       passwordVerification,
     ]);

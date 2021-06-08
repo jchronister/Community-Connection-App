@@ -11,7 +11,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatePost } from './post-create-component';
 import {MatButtonModule} from '@angular/material/button';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+// import { CustomMatPaginatorIntl } from './customPg';
 
 @NgModule({
   declarations: [
@@ -40,5 +41,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ]),
   ],
   bootstrap: [PostsListComponent],
+  providers: [
+    // {provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl}
+
+  ]
 })
 export class PostsModuleModule {}

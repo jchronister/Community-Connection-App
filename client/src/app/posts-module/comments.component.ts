@@ -10,7 +10,7 @@ import { MainServiceService } from './main-service.service';
 
   <div class="comment">
   <div class="text desc">{{comment.comment}}</div>
-  <button class ="userBtn" (click)="displayProfile(comment.user._id)">{{comment.user.username}}</button>
+  <div class="text"> <button class ="userBtn" (click)="displayProfile(comment.user._id)">{{comment.user.username}}</button> on {{comment.date | date: "M/d/yy h:mm a"}}</div>
   
   <div class ="userInfo" *ngIf="showCommentUser">
     <div>Name : {{comment.user.name}}</div>
@@ -21,18 +21,20 @@ import { MainServiceService } from './main-service.service';
     <div>Phone : {{comment.user.phone}}</div>
     <div>Email : {{comment.user.email}}</div>
   </div>
-    <div class="text"> on {{comment.date | date: "M/d/yy h:mm a"}}</div>
+    
   </div>
   <br>
   `,
   styles: [".comment {margin: 20px;display: inline-block}",
-           ".comment {background-color: grey;}",
+           ".comment {background-color: #edddf8;}",
            ".comment {padding: 20px;}",
            ".comment {border-radius: 25px;}",
-           ".text {color: white; padding: 5px}",
+           ".text {color: black; padding: 5px}",
            ".desc {font-size: 150%;}",
-           ".userInfo {color: white}",
-           ".userBtn {background-color:dodgerBlue;color :white; border:none; padding :5px; border-radius :10%}"
+           ".userInfo {color: grey}",
+           ".userBtn:hover {background-color : BlueViolet; cursor: pointer;}",
+           ".userBtn {background-color:MediumOrchid;color :white; border:none; padding :4px 15px; border-radius :8%}",
+          
 
           ],
 })

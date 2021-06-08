@@ -1,47 +1,43 @@
 <div class="background">
   <div *ngIf="error">{{error}}</div>
-<mat-card *ngFor="let post of posts" class="card">
-     <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>
-            <button
-            class="request"
-            (click)="showComments(post._id)"
-            >{{post.description}}</button>
-          </mat-card-title>
-          <mat-card-subtitle class="subtitle">{{post.type}} by {{post.user.username}} on {{post.date | date: "M/d/yy h:mm a"}} ({{post.comments.length}}comments)</mat-card-subtitle>
-     </mat-card-header>
-     <div mat-card-image></div>
-
-     <div *ngIf="showComment[post._id]">
-     <mat-card-content 
-      class="comments"
-      >
-        <app-comments 
-          *ngFor="let comment of post.comments" 
-          [comment]="comment"></app-comments>
-     </mat-card-content>
-
-
-     <mat-card-actions class="addComment">
-        <input
-        class="input"
-        type="text"
-        placeholder="Your comment here"
-        (keyup)="onKey($event)">
-
-        <button 
-          color="primary"
-          mat-raised-button
-          mat-button (click)="addComment(post)">Add Comment</button>
-
-     </mat-card-actions>
+  
+  <mat-card *ngFor="let post of posts" class="card">
+  
+    <mat-card-header>
+      <div mat-card-avatar></div>
+      <mat-card-title>
+        <button class="request" (click)="showComments(post._id)">{{post.description}}</button>
+      </mat-card-title>
+      
+      <mat-card-subtitle class="subtitle">{{post.type}} by <button class ="userNameBtn" (click)="toggleDisplayUser(post._id)">{{post.user.username}}</button> on {{post.date | date: "M/d/yy h:mm a"}} ({{post.comments.length}}comments)</mat-card-subtitle>
+    </mat-card-header>
+    <div class ="byUserInfo" *ngIf="byUserToggle[post._id]">
+      <div>Name : {{post.user.name}}</div>
+      <div>Address : {{post.user.address}}</div>
+      <div>City : {{post.user.city}}</div>
+      <div>State : {{post.user.state}}</div>
+      <div>ZipCode : {{post.user.zip}}</div>
+      <div>Phone : {{post.user.phone}}</div>
+      <div>Email : {{post.user.email}}</div>
     </div>
-</mat-card>
+    
+    <div mat-card-image></div>
 
-<mat-paginator [length]="100"
-              [pageSize]="10"
-              [pageSizeOptions]="[5, 25]"
-              (page)="page($event)">>
-</mat-paginator>
+    <div *ngIf="showComment[post._id]">
+      <mat-card-content class="comments">
+        <app-comments *ngFor="let comment of post.comments" [comment]="comment"></app-comments>
+      </mat-card-content>
+
+
+      <mat-card-actions class="addComment">
+        <input class="input" type="text" placeholder="Your comment here" (keyup)="onKey($event)">
+
+        <button color="primary" mat-raised-button mat-button (click)="addComment(post)">Add Comment</button>
+
+      </mat-card-actions>
+    </div>
+  </mat-card>
+
+  <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 25]" (page)="page($event)">>
+  </mat-paginator>
 </div>

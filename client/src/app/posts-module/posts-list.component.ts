@@ -13,7 +13,7 @@ import { isPlatformServer } from '@angular/common';
   templateUrl: './post-list.component.html',
   styles: [
 
-    ".request {font-size:200%; background-color:white; border:none; text-align:left}",
+    ".request {font-size:200%; background-color:white; border:none; text-align:left;}",
 
     ".subtitle {margin-left:15px}",
 
@@ -24,10 +24,16 @@ import { isPlatformServer } from '@angular/common';
     ".request:hover {color:purple; cursor: pointer;}",
 
     ".comments {margin-left:55px}",
+    
+    ".userNameBtn {background-color:white; color:  mediumpurple; border:none; padding:0;text-align:left; font-size:120%}",
+    
+    ".userNameBtn:hover{color: Black; cursor: pointer;}",
 
     ".addComment {margin-left:100px}",
 
-    ".input {padding: 10px; border-radius: 5px; border-width:1px; width:200px}"
+    ".input {padding: 10px; border-radius: 5px; border-width:1px; width:200px}",
+    
+    ".byUserInfo {color : grey ; margin-left : 75px}"
   ],
 })
 export class PostsListComponent implements OnInit {
@@ -36,7 +42,8 @@ export class PostsListComponent implements OnInit {
   type: string = '';
   pathOptions = {first:"", prev:"", next:"", last:""}
   showComment: any = {}
-  error = ""
+  error = "";
+  byUserToggle :any ={};
 
   constructor(
     private myService: MainServiceService,
@@ -48,6 +55,12 @@ export class PostsListComponent implements OnInit {
 
   onKey(e: Event) {
     this.inputValue = (<HTMLInputElement>e.target).value;
+  }
+  
+  toggleDisplayUser(id: string){
+    
+    const tgl = this.byUserToggle[id]
+    this.byUserToggle[id] = tgl === undefined? true:!tgl
   }
 
   addComment(post: IPosts) {

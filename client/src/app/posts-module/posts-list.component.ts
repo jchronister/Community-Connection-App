@@ -85,6 +85,9 @@ export class PostsListComponent implements OnInit {
 
   getPosts (direction?: string) {
 
+    // Clear Errors
+    this.error = ""
+
     const location = this.state.getLocation()
 
     if (!location) {
@@ -103,17 +106,18 @@ export class PostsListComponent implements OnInit {
 
       }
 
-      this.myService.getRequests(directionQuery + "items=" + this.pageSize + "&city=" + city + "&state=" + state + "&type=" + this.type).subscribe((data: any) => {
+      // Http Request
+      this.myService.getRequests(directionQuery || ("items=" + this.pageSize + "&city=" + city + "&state=" + state + "&type=" + this.type)).subscribe((data: any) => {
        
         if (data && data.body.status === 'Success') {
         
           this.posts = data.body.data;
 
-            const links = data.headers.get('Link')
-            this.links = links ? this.myService.parseLinkHeader(<string>links) : {}
+          // Read First/Next/Prev Links from Header
+          const links = data.headers.get('Link')
+          this.links = links ? this.myService.parseLinkHeader(<string>links) : {}
 
           if (this.posts.length === 0) {
-            if (direction = "next") this.currentPage--
             this.error = "No Valid Data"
           }
           
@@ -128,15 +132,12 @@ export class PostsListComponent implements OnInit {
 
 
 
-
+  // Prev / Next / Same Page
   page ($event:any) {
    
-
+    // Set Page Item Size
     this.pageSize = $event.pageSize
 
-    // getPosts ()
-    console.log($event, this.pageSize)
-    // getRequests
 
     if ($event.pageIndex > $event.previousPageIndex) {
 
@@ -154,12 +155,6 @@ export class PostsListComponent implements OnInit {
       // Size Change
       this.getPosts()
     }
-
-//     length: 100
-// pageIndex: 4
-// pageSize: 5
-// previousPageIndex: 2
-
 
   } 
 

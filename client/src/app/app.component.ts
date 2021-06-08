@@ -43,9 +43,9 @@ export class AppComponent implements OnInit, OnDestroy{
       
     })
 
-    this.location.valueChanges.subscribe(n=> {
+    this.subscriptions.add(this.location.valueChanges.subscribe(n=> {
       this.state.setLocation(n)
-    })
+    }))
     
 
     // Setup Active Link

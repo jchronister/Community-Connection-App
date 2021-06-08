@@ -30,31 +30,22 @@ router.param('id', (req, res, next)=> {
 // /posts
 router.route("/")
 
-    .get((req, res, next) => {
+    .get((req, res) => {
 
       // Check for Query Parameters
-      const page = req.query.page;
-      const key = req.query.key;
       const items = +req.query.items || 25;
-      const type = req.query.type;
-      const state = req.query.state;
-      const city = req.query.city;
+      
+      // Convert Page to Number
+      const strPage = req.query.page;
+      const pageCheck = Number(strPage);
+      const page = isNaN(pageCheck) ? 0 : pageCheck;
 
       // Setup Search Type
+      const type = req.query.type;
       if (type === "help-requests") {
         var matchType = {$match: {type : "Help Request"}};
       } else if (type === "service-providers") {
         matchType = {$match: {type : "Service Provider"}};
-      }
-
-      // Change Key to Date if Needed
-      if (key) {
-        const numKey = Number(key);
-        if (isNaN(numKey)) {
-          next(createHttpError(400, "Invalid Key, Must be a Number"));
-        } else {
-          var keyDate = new Date(numKey);
-        }
       }
 
       // Get Only Last 48 Hour Posts  17,280,000 = (48 * 60 * 60 * 1000)
@@ -63,68 +54,47 @@ router.route("/")
       // Send Links
       const sendResponse = (err, data) => {
 
-        if (data && data.length) {  
-          // Setup Return Link Options       
-          res.links({
-            first: 'page=first&key=0',
-            prev: 'page=prev&key=' + Date.parse(data[0].date),
-            next: 'page=next&key=' + Date.parse(data[data.length - 1].date),
-            last: 'page=last&key=0'
-          });
+        // Create Query String
+        const query = Object.entries(req.query).reduce((a, [key, value], i) => {
 
-          res.set('Access-Control-Expose-Headers', 'Link');
+          // Get All Query Except Page
+          if (key !== "page") {
+            a += (i > 0 ? "&" : "") +key + "=" + value;
+          }
+
+          return a;
+        },"");
+
+
+        // Setup Return Link Options       
+        res.links({
+          first: query + '&page=0',
+          prev: query + '&page=' + ((page - 1) < 0 ? 0 : page - 1),
+          next: query + '&page=' + (page + 1),
+        });
+
+        // Needed to Read Header in Browser
+        res.set('Access-Control-Expose-Headers', 'Link');
           
-        }
-
         sendJSON.call(res, err, data);
 
       };
 
+      // Search Query
+      let search = [
+        {$match: {date: {$gte: validPostDate}, "user.state": req.query.state, "user.city": req.query.city}},
+        {$sort: {date: -1}},
+        {$skip: page * items},
+        {$limit: items},
+      ];
 
-      switch (page) {
-
-        case "prev":
-          var search = [
-            {$match: {date: {$gt: keyDate}}},
-            {$sort: {date: 1}},
-            {$limit: items},
-            {$sort: {date: -1}}
-          ];
-          break;
-
-        case "next":
-          search = [
-            {$match: {"date": {$lt: keyDate}}},
-            {$sort: {"date": -1}},
-            {$limit: items},
-          ];
-          break;
-
-        case "last":
-          search = [
-            {$sort: {date: 1}},
-            {$limit: items},
-            {$sort: {date: -1}}
-          ];
-          break;
-
-        default:
-          search = [
-            {$sort: {date: -1}},
-            {$limit: items},
-          ];
-
-      }
-
-      // Add 48 Hours
-        search = [{$match: {date: {$gte: validPostDate}, "user.state": state, "user.city": city}}, ...search];
-
+      
       // Add Type of Match
       if (matchType) search = [matchType, ...search];
 
       req.db.db.collection("posts").aggregate(search).toArray(sendResponse);
 
-    })
+ })
     
     .post(isValidUser, verifyPostData, (req, res) => {
       req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));

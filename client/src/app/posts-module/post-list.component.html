@@ -39,8 +39,8 @@
     </div>
 </mat-card>
 
-<mat-paginator [length]="100"
-              [pageSize]="10"
+<mat-paginator [length]="totalPages"
+              [pageSize]="pageSize"
               [pageSizeOptions]="[5, 25]"
               (page)="page($event)">>
 </mat-paginator>

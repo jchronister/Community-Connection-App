@@ -27,7 +27,7 @@ export class MainServiceService {
     // return this.http.get<HttpResponse<IServerObject>>(
   getRequests(type?: string): any {
 
-      return this.http.get (this.url + '/api/v1/CS569FP/posts' + (type ? "/?type=" + type : ""),{observe: "response"})
+    return this.http.get (this.url + '/api/v1/CS569FP/posts' + (type ? "/?" + type : ""),{observe: "response"})
 
   }
 

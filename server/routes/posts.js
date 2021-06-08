@@ -35,8 +35,10 @@ router.route("/")
       // Check for Query Parameters
       const page = req.query.page;
       const key = req.query.key;
-      const items = req.query.items || 25;
+      const items = +req.query.items || 25;
       const type = req.query.type;
+      const state = req.query.state;
+      const city = req.query.city;
 
       // Setup Search Type
       if (type === "help-requests") {
@@ -61,13 +63,13 @@ router.route("/")
       // Send Links
       const sendResponse = (err, data) => {
 
-        if (data.length) {  
+        if (data && data.length) {  
           // Setup Return Link Options       
           res.links({
-            first: '?page=first&key=0',
-            prev: '?page=prev&key=' + Date.parse(data[0].date),
-            next: '?page=next&key=' + Date.parse(data[data.length - 1].date),
-            last: '?page=last&key=0'
+            first: 'page=first&key=0',
+            prev: 'page=prev&key=' + Date.parse(data[0].date),
+            next: 'page=next&key=' + Date.parse(data[data.length - 1].date),
+            last: 'page=last&key=0'
           });
 
           res.set('Access-Control-Expose-Headers', 'Link');
@@ -115,7 +117,7 @@ router.route("/")
       }
 
       // Add 48 Hours
-        search = [{$match: {date: {$gte: validPostDate}}}, ...search];
+        search = [{$match: {date: {$gte: validPostDate}, "user.state": state, "user.city": city}}, ...search];
 
       // Add Type of Match
       if (matchType) search = [matchType, ...search];

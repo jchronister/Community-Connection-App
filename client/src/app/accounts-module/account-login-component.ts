@@ -48,7 +48,7 @@ import { Subscription } from 'rxjs';
               type="text"
               matInput
               [formControl]="password"
-              placeholder="At Least 5 Characters"/>
+              placeholder="At Least 4 Characters"/>
           </mat-form-field>
 
           <div class="center">

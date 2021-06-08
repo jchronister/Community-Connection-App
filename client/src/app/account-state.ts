@@ -96,4 +96,22 @@ export class AccountState {
   getProperty(path: string, object: any, splitChr = '.'): any {
     return path.split(splitChr).reduce((a, n) => a && a[n], object);
   }
+
+
+  private _location = ""
+  private readonly _locationSub = new Subject();
+  setLocation(location: string) {
+    this._location = location
+    this._locationSub.next(location)
+  }
+
+  getLocation() {
+    return this._location
+  }
+
+  subscribeLocation(fx: (value: unknown) => void) {
+    return this._locationSub .subscribe(fx);
+  }
+
+
 }

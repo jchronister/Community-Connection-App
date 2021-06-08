@@ -4,8 +4,15 @@
       <span>The One Community Forum</span>
       <span class="example-spacer"></span>
 
-      <span>
-        {{user?'Currently Logged In as ' + user : 'Currently not Logged In '}} 
+      <mat-form-field>
+        <mat-label *ngIf="!location.value">Pick Location</mat-label>
+        <mat-select [formControl]="location">
+          <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="info">
+        {{user? user : 'Not Logged In'}} 
       </span>
       <button class="logout" *ngIf="user" (click)="logout(1)">Logout</button>
     </mat-toolbar-row>

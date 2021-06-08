@@ -20,15 +20,24 @@ export class AppComponent implements OnInit, OnDestroy{
   location = new FormControl("")
 
   constructor(private router: Router, private state: AccountState) {
-    
+ 
     // Get Current User
     this.subscriptions = this.state.subscribeToken( n => {
       this.loggedIn = n !== ""
 
       const user = this.state.getCurrentUserInfo()
-      debugger
+      // debugger
       this.user = user.username
-      this.location.setValue(user.city + "-" + user.state)
+
+      // Default to Burlington IA
+      if (user.username === "guest") {
+        this.location.setValue("Burlington-IA")
+      } else if (user.city && user.state) {
+        this.location.setValue(user.city + "-" + user.state)
+      } else {
+        this.location.setValue("")
+      }
+      
     })
 
     this.location.valueChanges.subscribe(n=> {

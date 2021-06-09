@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy{
  
     // Get Current User
     this.subscriptions = this.state.subscribeToken( n => {
-    debugger
+
       this.loggedIn = n !== ""
       const user = this.state.getCurrentUserInfo()
       this.user = user.username

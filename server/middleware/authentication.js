@@ -89,7 +89,9 @@ module.exports.createAccount = function (req, res, next) {
                         sendJSON.call(
                             res,
                             null,
-                            signData(req.db.tokenFx(data))
+                            signData(req.db.tokenFx({...data.ops[0], _id: data.insertedId}))
+
+                            
                         );
                     } else {
                         next(

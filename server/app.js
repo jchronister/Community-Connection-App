@@ -2,7 +2,7 @@
 
 var createHttpError = require("http-errors");
 var express = require("express");
-var path = require("path");
+// var path = require("path");
 var logger = require("morgan");
 
 const cors = require("cors");
@@ -10,7 +10,7 @@ const accountsRouter = require("./routes/accounts");
 const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
 const resetDataRouter = require("./routes/dataInit");
-const { sendJSON, getReturnObject } = require("./middleware/return-object");
+const { getReturnObject } = require("./middleware/return-object");
 const passDBConnection = require("./middleware/database.js");
 
 // Setup process.env from .env File
@@ -21,7 +21,7 @@ var app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use(passDBConnection);
@@ -36,8 +36,8 @@ app.use(function (req, res, next) {
 });
 
 // Error Handler
-app.use(function (err, req, res, next) {
-    // eslint-disable-line no-unused-vars
+app.use(function (err, req, res, next) {// eslint-disable-line no-unused-vars
+    
 
     // Return Error Message
     // res.status(err.status || 500);

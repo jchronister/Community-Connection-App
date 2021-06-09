@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import { IUser } from './app.types';
-import { Router } from '@angular/router';
+
+
 
 export interface ICities {
   city: string;
@@ -18,6 +19,7 @@ interface Iredirect {
 
 @Injectable()
 export class AccountState {
+
   getHost(): string {
     return 'http://localhost:3001';
   }
@@ -111,6 +113,51 @@ export class AccountState {
 
   subscribeLocation(fx: (value: unknown) => void) {
     return this._locationSub .subscribe(fx);
+  }
+
+ 
+  private _notificationLog: any = {lastUpdate: new Date(0), data: {}}
+  private readonly _notificationLogSub = new Subject();
+
+  getChangeLog() {
+    return this._notificationLog
+  }
+
+  setChangeLog(newLog: any) {
+    this._notificationLog = newLog
+    this._notificationLogSub.next(newLog)
+  }
+
+  subscribeChangeLog(fx: (value: unknown) => void) {
+    return this._notificationLogSub.subscribe(fx);
+  }
+
+  clearChangeLog() {
+    this._notificationLog = {lastUpdate: new Date(0), data: {}}
+  }
+
+  addViewedToChangeLog(id: string) {
+
+    const dateNow = new Date()
+
+    const old = this._notificationLog.data[id]
+
+    if (old) {
+
+      // Changed to Viewed
+      old.type = "view"
+      old.dateChange = dateNow
+
+    } else {
+
+      // Insert
+      this._notificationLog = {...this._notificationLog, [id]: {date: dateNow, type: "view"}}
+
+    }
+
+    // Send Change
+    this._notificationLogSub.next(this._notificationLog)
+
   }
 
 

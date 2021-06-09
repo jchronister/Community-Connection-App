@@ -14,7 +14,7 @@ import { AccountState } from './account-state';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { UserIntercepter } from './http-interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     MatToolbarModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatBadgeModule
   ],
   providers: [AccountState,
     { provide: HTTP_INTERCEPTORS, useClass: UserIntercepter , multi: true }

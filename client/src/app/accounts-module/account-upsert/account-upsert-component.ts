@@ -111,7 +111,7 @@ export class AccountUpsert implements OnInit{
   upsertSubmit () {
 
     this.http.createAccount(this.upsertForm.value).subscribe( n=> {
-      debugger 
+
       if (n.status === "Success") {
         this.appState.setToken(n.data)
         const redirect = this.appState.loggedInRedirect()

@@ -36,6 +36,7 @@ import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
       { path: 'help-requests', component: PostsListComponent },  //TODO: How to activate all-request active when logged in??
       { path: 'service-providers', component: PostsListComponent },
       { path: 'createrequest2', component: CreatePostComponent },
+      { path: 'new-requests', component: PostsListComponent },
       { path: 'request', component: CreatePost },
       { path: '**', redirectTo :'all-requests' },
     ]),

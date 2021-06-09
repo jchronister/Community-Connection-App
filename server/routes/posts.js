@@ -1,24 +1,12 @@
 "use strict";
 
+
 const createHttpError = require("http-errors");
 const { isValidUser } = require("../middleware/authentication");
-const { sendJSON } = require("../middleware/return-object");
-const { verifyMongoId } = require("../middleware/verify-data");
+const { sendJSON, getReturnObject } = require("../middleware/return-object");
+const { getMongoId, verifyMongoId } = require("../middleware/verify-data");
 const router = require("express")();
 
-// posts
-
-//posts/help_requests -- post//!Done
-//posts/help_requests --get  --sort by date //!Done
-
-//posts/service_providers --post//!Done
-//posts/service_providers --get  --sort by date//!Done
-
-//posts/:_id/comment --post //!Done
-
-//posts --get --sort by date //!Done
-
-//posts all posts sort by date
 
 // Verify Mongo Id & Create ObjectID
 router.param('id', (req, res, next)=> {
@@ -27,10 +15,12 @@ router.param('id', (req, res, next)=> {
     }
 });
 
+
 // /posts
 router.route("/")
 
-    .get((req, res) => {
+    // Get Posts
+    .get((req, res, next) => {
 
       // Check for Query Parameters
       const items = +req.query.items || 25;
@@ -46,6 +36,26 @@ router.route("/")
         var matchType = {$match: {type : "Help Request"}};
       } else if (type === "service-providers") {
         matchType = {$match: {type : "Service Provider"}};
+      } else if (type === "notifications") {
+
+        // Convert to MongoID Return on Error
+        let exit = false;
+        const ids = req.query.ids.split("<>").map(n=>{
+          
+          const id = getMongoId(n, next);
+
+          if (id) {
+            return id;
+          } else {
+            exit = true;
+            return 0;
+          }
+          
+        });
+
+        if (exit) return;
+        matchType = {$match: {_id : { $in: ids }}};
+
       }
 
       // Get Only Last 48 Hour Posts  17,280,000 = (48 * 60 * 60 * 1000)
@@ -92,10 +102,14 @@ router.route("/")
       // Add Type of Match
       if (matchType) search = [matchType, ...search];
 
+      // Overwrite for New notifications
+      if (type === "notifications") search = [matchType];
+
       req.db.db.collection("posts").aggregate(search).toArray(sendResponse);
 
- })
+    })
     
+    // Insert Post
     .post(isValidUser, verifyPostData, (req, res) => {
       req.db.db.collection("posts").insertOne(req.body, sendJSON.bind(res));
     });
@@ -107,6 +121,10 @@ router.route("/")
 router.route("/:id/comments")
 
     .post((req, res) => {
+      
+      // Set Date
+      req.body.date = new Date();
+
         req.db.db.collection("posts").updateOne(
             { _id : req.params.id }, 
             { $push: { comments: req.body } },
@@ -114,10 +132,60 @@ router.route("/:id/comments")
         );
     });
 
+
+router.route("/changes")
+
+    // Get Changes to Users Post or Posts They Commented On
+    .get( isValidUser, (req, res, next) => {
+
+      // Get Last Change Date - Default to 0
+      const dateMS = Number(req.query.datems) || 0;
+
+
+      // Get Mondo Id
+      const _id = getMongoId(req.db.user._id, next);
+
+      // const _id = getMongoId("6098368d6bf8f3231048f652", next); // Testing
+      if (!_id) return;
+
+      const query = [
+
+        // Match User for Created Posts and Comments
+        {$match: {$or: [{"user._id": _id}, {"comments.user._id": _id}]}},
+
+        // Just Deal with the Comments
+        {$project: {description:1, comments:1}},
+
+        // Splitout Comments
+        {$unwind: "$comments"},
+
+        // Filter Out Users Name (He knows what he posted) & Old Changes <= Date Query Parameter
+        {$match: {"comments.user._id": {$ne: _id}, "comments.date": {$gt: new Date(dateMS)}}},
+
+        // Return Post._id and Last Comment Date
+        {$project: {changeDate: "$comments.date", type: "change"}}
+                      
+      ];
+      
+      // Browser/Node Time Diff?
+      req.db.db.collection("posts").aggregate(query)
+        // .toArray(sendJSON.bind(res));
+        .toArray( (err, data) => {
+
+          const retrn = getReturnObject(err, data);
+
+          retrn.data = { checkDate: new Date(), data: retrn.data };
+
+          res.json(retrn);
+
+        });
+
+    });
+
 module.exports = router;
 
 
-
+// Verify Post Data and Creates Insert Object
 function verifyPostData (req, res, next) {
 
   const type = req.body.type;

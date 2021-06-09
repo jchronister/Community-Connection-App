@@ -119,9 +119,29 @@ export class PostsListComponent implements OnInit {
 
       }
 
+      // Check for Notifications
+      let strIds = ""
+      if (this.type === "notifications") {
+
+        // Get Ids
+        const ids = this.state.getChangeLog().data
+    
+        Object.entries(ids).forEach(([key, value]:any) => {
+
+          if (value.type === "change") {
+            strIds += (strIds===""?"":"<>") + key
+          }
+
+        })
+
+        if (strIds) strIds = "&ids=" + strIds
+
+      }
+
+
       // Http Request
-      this.myService.getRequests(directionQuery || ("items=" + this.pageSize + "&city=" + city + "&state=" + state + "&type=" + this.type)).subscribe((data: any) => {
-       
+      this.myService.getRequests(directionQuery || ("items=" + this.pageSize + "&city=" + city + "&state=" + state + "&type=" + this.type + strIds)).subscribe((data: any) => {
+        
         if (data && data.body.status === 'Success') {
         
           this.posts = data.body.data;
@@ -179,6 +199,9 @@ export class PostsListComponent implements OnInit {
 
     // true if undefined else Toggle Show
     this.showComment[id] = tgl === undefined ? true : !tgl
+
+    // Add to Change Log
+    this.state.addViewedToChangeLog(id)
 
   }
 

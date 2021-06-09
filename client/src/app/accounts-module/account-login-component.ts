@@ -85,11 +85,11 @@ export class AccountLogin implements OnInit, OnDestroy {
   subscriptions: Subscription | undefined;
 
   constructor(
-    private formBuilder: FormBuilder,
     private router: Router,
     private http: UserHttp,
     private state: AccountState
   ) {
+  
     this.username = new FormControl('bregmi@miu.edu', [
       Validators.required,
       Validators.email,
@@ -119,10 +119,15 @@ export class AccountLogin implements OnInit, OnDestroy {
     // this.subscriptions.add(this.userState
     //   .subscribe("errors", n => { this.error = <string>n})
     // )
+    // debugger
+    
   }
 
   // Login with Server
   login() {
+    console.log(this.signinForm)
+    // console.log(typeof(this.username.value),this.username.value)
+    
     // Send Login Request
     this.http.login(this.signinForm.value).subscribe(
       (n) => {
@@ -145,6 +150,7 @@ export class AccountLogin implements OnInit, OnDestroy {
     this.state.setToken(
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs'
     );
+    
     const redirect = this.state.loggedInRedirect()
     this.router.navigate(redirect.path, {state: redirect.state});
   }

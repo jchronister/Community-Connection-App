@@ -1,22 +1,15 @@
 "use strict";
 
-// Shell Connection
-// mongo "mongodb+srv://cluster0.5yjks.mongodb.net/myFirstDatabase" --username user1
-// C4U89mZsd
-// MongoDatabaseConnectionString="mongodb+srv://user1:C4U89mZsd@cluster0.5yjks.mongodb.net/?retryWrites=true&w=majority"
-
-// mongo "mongodb+srv://cluster0.p1i7n.mongodb.net/myFirstDatabase" --username bipin
-// 1234
-
 // Mongo DB
 const { MongoClient } = require("mongodb");
 let db;
 
 /** Create and Store Database Connection. Logs Errors to Console
  * @param {function} fx - Callback Function (Database as Argument)
+ * @param {function} next - Express next Function
  * @returns {undefined}
  */
-function connectToMongoDatabase(fx) {
+function connectToMongoDatabase(fx, next) {
     const uri = process.env.MongoDatabaseConnectionString;
 
     MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -25,8 +18,8 @@ function connectToMongoDatabase(fx) {
             db = client;
             fx(client);
         })
-        .catch(console.log);
-    //??? Log Connections and Errors to File ???
+        .catch(next(console.log));
+    
 }
 
 /** Pass Database Connection Reference & Info to Route Handlers
@@ -63,6 +56,6 @@ module.exports = function (req, res, next) {
     if (db) {
         passDBConnection(req, res, next);
     } else {
-        connectToMongoDatabase(() => passDBConnection(req, res, next));
+        connectToMongoDatabase(() => passDBConnection(req, res, next), next);
     }
 };

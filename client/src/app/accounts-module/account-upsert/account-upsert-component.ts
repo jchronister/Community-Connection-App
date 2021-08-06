@@ -6,6 +6,8 @@ import { AccountState, ICities } from "../../account-state";
 
 import { Placeholder } from "@angular/compiler/src/i18n/i18n_ast";
 import { Router } from "@angular/router";
+import { debounceTime, flatMap, map } from "rxjs/operators";
+import { of } from "rxjs";
 
 
 
@@ -54,7 +56,7 @@ export class AccountUpsert implements OnInit{
 
     this.email = new FormControl("", [Validators.required, Validators.email])
     this.password = new FormControl("", [Validators.required, passwordVerification])
-    this.username = new FormControl("", Validators.required)
+    this.username = new FormControl("", Validators.required, this.verifyUsername)
     this.fullname = new FormControl("", [Validators.required, this.fullNameValidator])
     this.city = new FormControl("", Validators.required)
     this.state = new FormControl("", Validators.required)
@@ -125,6 +127,20 @@ export class AccountUpsert implements OnInit{
 
     }
     )
+
+  }
+
+
+  verifyUsername(el: any) {
+
+    return el.valueChanges.pipe(
+      debounceTime(500),
+      map((n)=>{
+        console.log(n)
+        return null
+      })
+    )
+
 
   }
 

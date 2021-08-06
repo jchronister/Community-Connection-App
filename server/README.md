@@ -1,4 +1,4 @@
-# Angular Client App
+# Node Express Server
 
 # CS569 - Web Application Development II - Angular
 

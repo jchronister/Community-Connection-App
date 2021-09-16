@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Form, FormControl, FormGroup, Validators } from "@angular/forms";
-import { IToken, UserHttp } from "../account-http-service";
-import { passwordVerification } from "../account-module-fx";
-import { AccountState, ICities } from "../../account-state";
+import { IToken, UserHttp } from "../services/account-http-service";
+import { passwordVerification } from "../functions/account-module-fx";
+import { AccountState, ICities } from "../../services/service-account.state";
 
 import { Placeholder } from "@angular/compiler/src/i18n/i18n_ast";
 import { Router } from "@angular/router";

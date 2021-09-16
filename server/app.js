@@ -29,6 +29,11 @@ app.use("/api/v1/CS569FP/accounts", accountsRouter);
 app.use("/api/v1/CS569FP/users", usersRouter);
 app.use("/api/v1/CS569FP/posts", postsRouter);
 app.use("/api/v1/CS569FP/data", resetDataRouter);
+app.get("/ping", (req, res) => {
+  res.json(getReturnObject("Running"));
+});
+
+
 
 // Handle 404 URL Not Found
 app.use(function (req, res, next) {

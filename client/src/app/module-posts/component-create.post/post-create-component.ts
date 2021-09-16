@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
-import { AccountState } from "../account-state"
-import { IServerObject } from "../app.types";
-import { MainServiceService } from "./main-service.service"
+import { AccountState } from "../../services/service-account.state"
+import { IServerObject } from "../../types/app.types";
+import { MainServiceService } from "../services/main-service.service"
 
 @Component({
 

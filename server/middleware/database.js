@@ -18,7 +18,7 @@ function connectToMongoDatabase(fx, next) {
             db = client;
             fx(client);
         })
-        .catch(next(console.log));
+        .catch(next("No Database Connection"));
     
 }
 

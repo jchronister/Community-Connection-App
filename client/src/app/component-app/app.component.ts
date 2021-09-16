@@ -3,8 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AccountState } from './account-state';
-import { PostNotification } from './post-notification';
+import { AccountState } from '../services/service-account.state';
+import { PostNotification } from '../services/service-post.notification';
 
 
 @Component({

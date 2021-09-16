@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { IComments, IUser, newIUser } from '../app.types';
-import { MainServiceService } from './main-service.service';
+import { IComments, IUser, newIUser } from '../../types/app.types';
+import { MainServiceService } from '../services/main-service.service';
 
 
 @Component({
@@ -34,17 +34,14 @@ import { MainServiceService } from './main-service.service';
            ".userInfo {color: grey}",
            ".userBtn:hover {background-color : BlueViolet; cursor: pointer;}",
            ".userBtn {background-color:MediumOrchid;color :white; border:none; padding :4px 15px; border-radius :8%}",
-          
-
           ],
 })
 export class CommentsComponent implements OnInit {
+
   @Input() comment : IComments
-  
   showCommentUser : boolean =false;
-
-
   newComment : FormControl= new FormControl('',Validators.required)
+
   constructor(private myService: MainServiceService) {
 
     this.comment = {

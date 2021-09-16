@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PostsListComponent } from './posts-list.component';
+import { PostsListComponent } from './component-list.posts/posts-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
-import { CommentsComponent } from './comments.component';
-import { CreatePostComponent } from './create-post.component';
+import { CommentsComponent } from './component-comments/comments.component';
+import { CreatePostComponent } from './component-create.post/create-post.component';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CreatePost } from './post-create-component';
+import { CreatePost } from './component-create.post/post-create-component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 // import { CustomMatPaginatorIntl } from './customPg';

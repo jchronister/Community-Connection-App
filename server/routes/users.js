@@ -1,24 +1,26 @@
 "use strict";
 
 
-const {ObjectID} = require ('mongodb')
+// const {ObjectID} = require ('mongodb')
 
 const { sendJSON } = require("../middleware/return-object");
 const { verifyMongoId } = require('../middleware/verify-data');
 
 const router = require("express")();
 
-// users
-// users/:id --get
+
+
 router.param('id', (req, res, next, id)=> {
-                 if(verifyMongoId(req.params, 'id', next)){
-                     next();
-                 }})
-router
-    .route("/")
+    if(verifyMongoId(req.params, 'id', next)){
+        next();
+}});
+
+// users
+router.route("/");
     // .get((req, res) => {
     //           req.db.db.collection('users').find().limit(25).toArray(sendJSON.bind(res))});  //TODO: I want to use a middleware to protect this route only for admin. How to do that?
 
+// users/:id --get
 router
     .route("/:id")
 

@@ -2,9 +2,9 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
 import { tap} from 'rxjs/operators';
-import { AccountState } from '../account-state';
+import { AccountState } from '../../services/service-account.state';
 
-import { IUser, IPosts, IServerObject, IComments } from '../app.types';
+import { IUser, IPosts, IServerObject, IComments } from '../../types/app.types';
 
 @Injectable({
   providedIn: 'root',

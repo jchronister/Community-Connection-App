@@ -1,20 +1,16 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AccountState } from "./account-state";
-
-import { IServerObject } from "./app.types"
+import { AccountState } from "./service-account.state";
+import { IServerObject } from "../types/app.types"
 
 
 
 @Injectable({providedIn: "root"})
 export class PostNotification {
 
-
   constructor (private http: HttpClient, private state: AccountState) {
 
-
   }
-
 
   checkForChanges () {
 
@@ -62,8 +58,6 @@ export class PostNotification {
         this.state.setChangeLog({lastUpdate: new Date(n.data.checkDate), data: newLog})
 
       }
-
-
 
     })
 

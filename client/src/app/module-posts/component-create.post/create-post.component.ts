@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountState } from '../account-state';
-import { IForm } from '../app.types';
-import { MainServiceService } from './main-service.service';
+import { AccountState } from '../../services/service-account.state';
+import { IForm } from '../../types/app.types';
+import { MainServiceService } from '../services/main-service.service';
 
 @Component({
   selector: 'app-create-post',
@@ -30,7 +30,8 @@ export class CreatePostComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.myForm);
+
+    // console.log(this.myForm);
 
     if (!this.myForm.get('type')) {
       return;
@@ -43,13 +44,16 @@ export class CreatePostComponent implements OnInit {
     };
 
     if (this.myForm.get('type')!.value == 'Help Request') {
+
       this.myService.newHelpRequest(dataObj).subscribe((data) => {
         if (data.status === 'Success') {
           this.myForm.reset();
           alert('Form submitted');
         }
       });
+      
     } else {
+
       this.myService.newServiceProvider(dataObj).subscribe((data) => {
         if (data.status === 'Success') {
           this.myForm.reset();

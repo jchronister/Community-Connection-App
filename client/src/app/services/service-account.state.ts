@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import jwt_decode from 'jwt-decode';
-import { IUser } from './app.types';
+import { IUser } from '../types/app.types';
 
 
 

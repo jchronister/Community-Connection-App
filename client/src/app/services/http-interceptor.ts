@@ -1,10 +1,10 @@
 import { HttpHandler, HttpInterceptor, HttpRequest, HttpEvent, HttpErrorResponse, HttpEventType } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
-import { AccountState } from "./account-state";
+import { AccountState } from "./service-account.state";
 import { map, catchError, tap } from 'rxjs/operators';
 import { ngfactoryFilePath } from "@angular/compiler/src/aot/util";
-import { IServerObject } from "./app.types"
+import { IServerObject } from "../types/app.types"
 import { analyzeAndValidateNgModules } from "@angular/compiler";
 
 @Injectable({providedIn: "root"})

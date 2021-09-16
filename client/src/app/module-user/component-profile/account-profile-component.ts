@@ -1,9 +1,9 @@
 import { FixedSizeVirtualScrollStrategy } from "@angular/cdk/scrolling";
 import { Component, OnInit, Pipe, PipeTransform } from "@angular/core";
 import { Router } from "@angular/router";
-import { AccountState } from "../account-state";
-import { IUser } from "../app.types";
-import { getProperty } from "./account-module-fx"
+import { AccountState } from "../../services/service-account.state";
+import { IUser } from "../../types/app.types";
+import { getProperty } from "../functions/account-module-fx"
 
 @Component({
 

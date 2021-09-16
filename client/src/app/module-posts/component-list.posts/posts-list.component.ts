@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MainServiceService } from './main-service.service';
+import { MainServiceService } from '../../module-posts/services/main-service.service';
 
-import { IPosts, IServerObject, IComments, } from '../app.types';
-import { AccountState } from '../account-state';
+import { IPosts, IServerObject, IComments, } from '../../types/app.types';
+import { AccountState } from '../../services/service-account.state';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-posts-list',
-  templateUrl: './post-list.component.html',
+  templateUrl: './posts-list.component.html',
   styles: [
 
     ".request {font-size:200%; background-color:white; border:none; text-align:left;}",

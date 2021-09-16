@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserHttp } from './account-http-service';
-import { passwordVerification } from './account-module-fx';
-import { AccountState } from '../account-state';
+import { UserHttp } from '../services/account-http-service';
+import { passwordVerification } from '../functions/account-module-fx';
+import { AccountState } from '../../services/service-account.state';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -125,7 +125,7 @@ export class AccountLogin implements OnInit, OnDestroy {
 
   // Login with Server
   login() {
-    console.log(this.signinForm)
+
     // console.log(typeof(this.username.value),this.username.value)
     
     // Send Login Request
@@ -140,19 +140,36 @@ export class AccountLogin implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         this.error = <string>error.message;
       }
     );
   }
 
   continueAsGuest() {
-    this.state.setToken(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs'
-    );
+
+
+ 
+    // Ping Server to Verify Data Available
+    this.http.pingServer().subscribe(
+
+      (n) => {
     
-    const redirect = this.state.loggedInRedirect()
-    this.router.navigate(redirect.path, {state: redirect.state});
+        this.state.setToken(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyZXNzIjpudWxsLCJjaXR5IjpudWxsLCJlbWFpbCI6Imd1ZXN0IiwibmFtZSI6Imd1ZXN0IiwicGhvbmUiOm51bGwsInN0YXRlIjpudWxsLCJ1c2VybmFtZSI6Imd1ZXN0IiwiemlwIjpudWxsLCJfaWQiOm51bGwsImlhdCI6MTYyMjkwOTk3OH0.mlt3sUGWdeNV0EyzZIn5OoWmlC1A_twv4w_4o2TopFs'
+        );
+
+        const redirect = this.state.loggedInRedirect()
+        this.router.navigate(redirect.path, {state: redirect.state});
+
+      },
+      (error) => {
+        this.error = <string>error.message;
+      }
+
+    )
+
+
   }
 
   ngOnDestroy() {

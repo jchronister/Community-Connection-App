@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
 import {Observable} from "rxjs"
-import { AccountState } from "../account-state";
+import { AccountState } from "../../services/service-account.state";
 
 export interface IToken {
 
@@ -47,6 +47,9 @@ export class UserHttp {
     return this.http.post<IServerObject>(this.url + "/api/v1/CS569FP/accounts",data)
   }
 
+  pingServer (): Observable<IServerObject> {
+    return this.http.get<IServerObject>(this.url + "/ping")
+  }
 
 
 }
